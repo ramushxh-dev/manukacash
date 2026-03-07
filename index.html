@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Manuka - Cash Control</title>
+    <style>
+        :root {
+            --bg:#0b0b0d;
+            --card:#16171a;
+            --accent:#4d8dfa;
+            --text:#e3e3e3;
+            --secondary:#9aa0a6;
+            --border:#3c4043;
+            --input-bg:#202124;
+            --success:#81c995;
+            --danger:#f28b82;
+            --manuka-bg:#747c44;
+        }
+
+        body {
+            font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+            background:var(--bg);
+            color:var(--text);
+            margin:0;
+            padding:10px;
+            display:flex;
+            justify-content:center;
+        }
+
+        .container {
+            width:100%;
+            max-width:360px;
+        }
+
+        .header {
+            width:100%;
+            height:140px;
+            margin-bottom:10px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            overflow:hidden;
+            border-radius:12px;
+            background:var(--manuka-bg);
+            border:1px solid var(--border);
+        }
+
+        .header img {
+            max-height: 120px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .card {
+            background:var(--card);
+            border-radius:10px;
+            padding:10px;
+            margin-bottom:6px;
+            border:1px solid var(--border);
+        }
+
+        h3 {
+            margin:0 0 6px 0;
+            font-size:0.65rem;
+            color:var(--accent);
+            text-transform:uppercase;
+            letter-spacing:0.5px;
+        }
+
+        label {
+            display:block;
+            font-size:0.55rem;
+            color:var(--secondary);
+            margin-bottom:2px;
+        }
+
+        input {
+            width:100%;
+            background:var(--input-bg);
+            border:1px solid var(--border);
+            color:white;
+            padding:5px 8px;
+            border-radius:5px;
+            font-size:0.8rem;
+            box-sizing:border-box;
+            outline:none;
+        }
+
+        .supplier-row {
+            display:flex;
+            gap:5px;
+            padding:3px 0;
+            border-bottom:1px solid #28292c;
+        }
+
+        .supplier-row input[type="number"] {
+            flex:0.8;
+            text-align:right;
+            color:var(--accent);
+            font-weight:bold;
+        }
+
+        .btn-add {
+            background:transparent;
+            color:var(--secondary);
+            border:1px dashed var(--border);
+            padding:4px;
+            width:100%;
+            border-radius:5px;
+            font-size:0.6rem;
+            margin-top:5px;
+            cursor:pointer;
+        }
+
+        .wallet-item {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:2px 0;
+            border-bottom:1px solid #232427;
+        }
+
+        .denom-label {
+            font-size:0.75rem;
+            width:35px;
+            font-weight:600;
+        }
+
+        .denom-input-wrapper {
+            display:flex;
+            align-items:center;
+            gap:6px;
+        }
+
+        .denom-input-wrapper input {
+            width:45px;
+            height: 24px;
+            text-align:center;
+            padding:2px;
+            font-size: 0.75rem;
+        }
+
+        .row-total {
+            min-width:60px;
+            text-align:right;
+            font-size:0.75rem;
+            color:var(--secondary);
+            font-weight: bold;
+        }
+
+        .summary-line {
+            display:flex;
+            justify-content:space-between;
+            padding:6px 0 2px;
+            font-weight:bold;
+            font-size:0.75rem;
+        }
+
+        .status-box {
+            text-align:center;
+            padding:10px;
+            border-radius:10px;
+            background:linear-gradient(145deg,#1e1f21,#16171a);
+            border:1px solid var(--border);
+            margin-top:5px;
+        }
+
+        .big-sum {
+            font-size:1.8rem;
+            font-weight:700;
+            margin:0;
+            letter-spacing:-1px;
+        }
+
+        .status-msg {
+            font-size:0.6rem;
+            font-weight:bold;
+            margin-top:2px;
+        }
+
+        .actions {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:8px;
+            margin:10px 0 30px;
+        }
+
+        .btn-ui {
+            padding:10px;
+            border-radius:8px;
+            font-size:0.75rem;
+            font-weight:bold;
+            cursor:pointer;
+            border:none;
+        }
+
+        .btn-print { background:var(--accent); color:white; }
+        .btn-reset { background:#3c4043; color:white; }
+
+        /* MAGJIA E PRINTIMIT: FSHEH RRESHTAT E ZBRAZËT */
+        @media print {
+            body { background:white; color:black; padding:0; }
+            .actions, .btn-add { display:none !important; }
+            
+            /* Fsheh rreshtat e keshit që janë 0 */
+            .wallet-item.is-empty, .supplier-row.is-empty {
+                display: none !important;
+            }
+
+            .card, .status-box { 
+                border:1px solid #eee; 
+                background:white; 
+                color:black; 
+                padding: 6px; 
+                margin-bottom: 4px;
+                box-shadow: none;
+            }
+
+            input { 
+                border:none !important; 
+                color:black !important; 
+                text-align:right !important; 
+                background: transparent !important; 
+            }
+
+            .header { height:90px; background:var(--manuka-bg) !important; -webkit-print-color-adjust: exact; }
+            .row-total, #theoretical, #totalCash, .denom-label { color: black !important; }
+            
+            /* Formatimi i rreshtit: 200€ x 1 = 200€ */
+            .denom-input-wrapper::before {
+                content: "x";
+                margin-right: 15px;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img src="manukalogo.png" alt="Manuka Logo">
+    </div>
+
+    <div class="card">
+        <div style="display:flex; gap:8px;">
+            <div style="flex:1.2;">
+                <label>Data / Dita</label>
+                <input type="text" id="data" placeholder="Sot">
+            </div>
+            <div style="flex:1;">
+                <label>Pazari Total (€)</label>
+                <input type="number" id="pazari" oninput="calculate()" placeholder="0.00" step="0.01">
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Furnitorët / Shpenzimet</h3>
+        <div id="supplierList">
+            <div class="supplier-row is-empty">
+                <input type="text" placeholder="Emri..." oninput="calculate()">
+                <input type="number" class="s-amount" placeholder="0.00" oninput="calculate()" step="0.01">
+            </div>
+        </div>
+        <button class="btn-add" onclick="addSupplier()">+ SHTO REND</button>
+        <div class="summary-line" style="color:var(--accent); border-top:1px solid #28292c; margin-top:4px; padding-top:4px;">
+            <span>NETO E PRITUR:</span>
+            <span id="theoretical">0.00 €</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Arka (Kesh Fizik)</h3>
+        <div class="wallet-list">
+            <div class="wallet-item is-empty"><div class="denom-label">200€</div><div class="denom-input-wrapper"><input type="number" class="cash" data-v="200" oninput="calculate()"><span class="row-total">0.00 €</span></div></div>
+            <div class="wallet-item is-empty"><div class="denom-label">100€</div><div class="denom-input-wrapper"><input type="number" class="cash" data-v="100" oninput="calculate()"><span class="row-total">0.00 €</span></div></div>
+            <div class="wallet-item is-empty"><div class="denom-label">50€</div><div class="denom-input-wrapper"><input type="number" class="cash" data-v="50" oninput="calculate()"><span class="row-total">0.00 €</span></div></div>
+            <div class="wallet-item is-empty"><div class="denom-label">20€</div><div class="denom-input-wrapper"><input type="number" class="cash" data-v="20" oninput="calculate()"><span class="row-total">0.00 €</span></div></div>
+            <div class="wallet-item is-empty"><div class="denom-label">10€</div><div class="denom-input-wrapper"><input type="number" class="cash" data-v="10" oninput="calculate()"><span class="row-total">0.00 €</span></div></div>
+            <div class="wallet-item is-empty"><div class="denom-label">5€</div><div class="denom-input-wrapper"><input type="number" class="cash" data-v="5" oninput="calculate()"><span class="row-total">0.00 €</span></div></div>
+            
+            <div class="wallet-item is-empty" style="border:none; background:#1c1d21; margin:2px -5px; padding:4px 5px; border-radius:5px;">
+                <div class="denom-label" style="width:110px; color:var(--accent); font-size:0.7rem;">TOTAL MONEDHAT</div>
+                <input type="number" id="hekrat" oninput="calculate()" placeholder="0.00" step="0.01" style="width:80px; text-align:right; background:transparent; border:none; font-weight:bold; color:white;">
+            </div>
+        </div>
+        <div class="summary-line" style="border-top:1px solid #28292c; margin-top:4px; padding-top:4px;">
+            <span>TOTALI FIZIK:</span>
+            <span id="totalCash" style="color:var(--success);">0.00 €</span>
+        </div>
+    </div>
+
+    <div id="statusCard" class="status-box">
+        <div id="diffSum" class="big-sum">0.00 €</div>
+        <div id="statusMsg" class="status-msg">---</div>
+    </div>
+
+    <div class="actions">
+        <button class="btn-ui btn-reset" onclick="confirmReset()">RESET</button>
+        <button class="btn-ui btn-print" onclick="window.print()">PRINTO PDF</button>
+    </div>
+</div>
+
+<script>
+function addSupplier(){
+    const div=document.createElement('div');
+    div.className='supplier-row is-empty';
+    div.innerHTML='<input type="text" placeholder="Emri..." oninput="calculate()"><input type="number" class="s-amount" placeholder="0.00" oninput="calculate()" step="0.01">';
+    document.getElementById('supplierList').appendChild(div);
+}
+
+function calculate(){
+    // Pazari dhe Furnitorët
+    const pazari = parseFloat(document.getElementById('pazari').value) || 0;
+    let spent = 0;
+    document.querySelectorAll('.supplier-row').forEach(row => {
+        const val = parseFloat(row.querySelector('.s-amount').value) || 0;
+        spent += val;
+        // Markimi për fshehje në printim
+        if(val > 0) row.classList.remove('is-empty'); else row.classList.add('is-empty');
+    });
+    const theo = pazari - spent;
+    document.getElementById('theoretical').innerText = theo.toFixed(2) + " €";
+
+    // Kartëmonedhat
+    let paperCash = 0;
+    document.querySelectorAll('.wallet-item').forEach(item => {
+        const input = item.querySelector('input.cash');
+        if(input) {
+            const val = parseFloat(input.getAttribute('data-v'));
+            const count = parseFloat(input.value) || 0;
+            const sub = val * count;
+            paperCash += sub;
+            item.querySelector('.row-total').innerText = sub.toFixed(2) + " €";
+            
+            // Markimi për fshehje në printim
+            if(count > 0) item.classList.remove('is-empty'); else item.classList.add('is-empty');
+        }
+    });
+
+    // Monedhat
+    const hekratInput = document.getElementById('hekrat');
+    const coins = parseFloat(hekratInput.value) || 0;
+    if(coins > 0) hekratInput.closest('.wallet-item').classList.remove('is-empty'); 
+    else hekratInput.closest('.wallet-item').classList.add('is-empty');
+
+    const totalPhysical = paperCash + coins;
+    document.getElementById('totalCash').innerText = totalPhysical.toFixed(2) + " €";
+
+    // Diferenca
+    const diff = totalPhysical - theo;
+    const sumEl = document.getElementById('diffSum');
+    const msg = document.getElementById('statusMsg');
+
+    sumEl.innerText = (diff > 0 ? "+" : "") + diff.toFixed(2) + " €";
+
+    if (Math.abs(diff) < 0.01) {
+        sumEl.style.color = "var(--success)";
+        msg.innerText = "BILANCI OK";
+    } else if (diff < 0) {
+        sumEl.style.color = "var(--danger)";
+        msg.innerText = "MUNGESË NË ARKË";
+    } else {
+        sumEl.style.color = "var(--accent)";
+        msg.innerText = "TEPRICË (PLUS)";
+    }
+}
+
+function confirmReset(){
+    if(confirm("Fshij të dhënat?")) location.reload();
+}
+</script>
+
+</body>
+</html>
