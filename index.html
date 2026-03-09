@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Manuka - Pro Control</title>
+    <title>Manuka - Cash Control</title>
 
     <style>
         :root {
@@ -19,22 +19,20 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
             color: var(--text);
             margin: 0;
             padding: 0 15px env(safe-area-inset-bottom) 15px;
             display: flex;
             justify-content: center;
-            -webkit-font-smoothing: antialiased;
         }
 
         .container { width: 100%; max-width: 400px; }
 
-        /* LOGOJA FINALE - E PASTER DHE PROFESIONALE */
         .header-box {
             width: 100%;
-            padding: 20px 0 10px 0;
+            padding: 15px 0 10px 0;
             display: flex;
             justify-content: center;
         }
@@ -42,9 +40,9 @@
         .header-box img {
             width: 100%;
             height: auto;
-            max-height: 350px;
+            max-height: 250px;
             object-fit: contain;
-            border-radius: 14px;
+            border-radius: 12px;
         }
 
         .card {
@@ -66,8 +64,6 @@
             gap: 6px;
         }
 
-        h3::before { content: ""; width: 2px; height: 10px; background: var(--accent); }
-
         label { display: block; font-size: 0.6rem; color: var(--secondary); margin-bottom: 3px; text-transform: uppercase; }
 
         input {
@@ -75,15 +71,12 @@
             background: var(--input-bg);
             border: 1px solid var(--border);
             color: white;
-            padding: 10px;
+            padding: 8px;
             border-radius: 8px;
-            font-size: 16px; /* MBRETI I IPHONE-IT: Ndalon Auto-Zoom */
+            font-size: 16px; 
             box-sizing: border-box;
             outline: none;
-            -webkit-appearance: none;
         }
-
-        input:focus { border-color: var(--accent); }
 
         .supplier-row { display: flex; gap: 6px; margin-bottom: 6px; }
         .supplier-row input[type="text"] { flex: 1.5; }
@@ -124,6 +117,8 @@
             margin-top: 5px;
         }
 
+        .theo-info { font-size: 0.8rem; color: var(--secondary); margin-bottom: 5px; }
+        .theo-val { color: var(--text); font-weight: bold; font-size: 1.1rem; }
         .big-sum { font-size: 2.2rem; font-weight: 800; margin: 0; letter-spacing: -1px; }
 
         .main-actions { display: grid; grid-template-columns: 1fr 1.5fr; gap: 10px; margin-top: 10px; padding-bottom: 20px; }
@@ -131,13 +126,49 @@
         .btn-reset { background: #2f3337; color: white; }
         .btn-print { background: var(--success); color: #000; }
 
+        /* KONFIGURIMI PËR PRINTIM A4 */
         @media print {
-            .btn-group, .main-actions, .btn-action { display: none !important; }
-            body { background: white; color: black; padding: 0; }
-            .card, .status-box { border: 1px solid #ccc !important; background: white !important; color: black !important; }
-            .header-box img { max-height: 400px; }
-            input { border: none !important; color: black !important; background: none !important; }
-            .big-sum { color: black !important; }
+            @page {
+                size: A4;
+                margin: 10mm;
+            }
+            body {
+                background: white;
+                color: black;
+                padding: 0;
+                display: block;
+            }
+            .container {
+                max-width: 100%;
+                width: 100%;
+            }
+            .btn-group, .main-actions, .btn-action {
+                display: none !important;
+            }
+            .card, .status-box {
+                background: white !important;
+                color: black !important;
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                margin-bottom: 5px;
+                padding: 10px;
+            }
+            .header-box { padding: 0 0 10px 0; }
+            .header-box img { max-height: 150px; }
+            input {
+                border: none !important;
+                background: transparent !important;
+                color: black !important;
+                padding: 0;
+                font-size: 14px;
+            }
+            .denom-label, h3 { color: black !important; }
+            .theo-val, .big-sum { color: black !important; }
+            .wallet-item { border-bottom: 1px solid #eee !important; padding: 3px 0; }
+            .theo-info { margin-bottom: 5px; }
+            /* Zvogëlojmë tekstet që të zënë vetëm një faqe */
+            h3 { font-size: 10pt; }
+            .big-sum { font-size: 24pt; }
         }
     </style>
 </head>
@@ -179,14 +210,15 @@
         <h3>Arka Fizike</h3>
         <div id="denomContainer"></div>
         <div class="wallet-item" style="border-top: 1px solid var(--border); margin-top: 5px; padding-top: 5px;">
-            <div class="denom-label">Monedha (Hekra)</div>
+            <div class="denom-label">Hekrat</div>
             <input type="number" id="hekrat" oninput="calculate()" style="width: 80px; text-align: right;">
         </div>
     </div>
 
     <div class="status-box">
+        <div class="theo-info">DUHET TË JENË: <span id="theoretical" class="theo-val">0.00 €</span></div>
+        <div style="font-size: 0.6rem; font-weight: 800; margin-bottom: 2px; letter-spacing: 1px; color: var(--secondary);">DIFERENCA (+/-)</div>
         <div id="diffSum" class="big-sum">0.00 €</div>
-        <div id="statusMsg" style="font-size: 0.6rem; font-weight: 800; margin-top: 4px; letter-spacing: 1px;">GATI</div>
     </div>
 
     <div class="main-actions">
@@ -207,7 +239,7 @@
         div.innerHTML = `
             <div class="denom-label">${d}€</div>
             <div style="display: flex; align-items: center; gap: 8px;">
-                <input type="number" class="cash" data-v="${d}" oninput="calculate()" style="width: 55px; text-align: center; padding: 6px;">
+                <input type="number" class="cash" data-v="${d}" oninput="calculate()" style="width: 55px; text-align: center; padding: 4px;">
                 <span class="row-total">0.00 €</span>
             </div>
         `;
@@ -241,16 +273,17 @@
         });
         arka += (parseFloat(document.getElementById('hekrat').value) || 0);
 
-        const neto = pazari - furnitoret;
-        const diff = arka - neto;
-        
+        const netoPritur = pazari - furnitoret;
+        document.getElementById('theoretical').innerText = netoPritur.toFixed(2) + " €";
+
+        const diff = arka - netoPritur;
         const diffEl = document.getElementById('diffSum');
-        const msgEl = document.getElementById('statusMsg');
+        
         diffEl.innerText = (diff > 0 ? "+" : "") + diff.toFixed(2) + " €";
         
-        if (Math.abs(diff) < 0.01) { diffEl.style.color = "var(--success)"; msgEl.innerText = "OK ✅"; }
-        else if (diff < 0) { diffEl.style.color = "var(--danger)"; msgEl.innerText = "MUNGESË ⚠️"; }
-        else { diffEl.style.color = "var(--accent)"; msgEl.innerText = "TEPRICË 💹"; }
+        if (Math.abs(diff) < 0.01) { diffEl.style.color = "var(--success)"; }
+        else if (diff < 0) { diffEl.style.color = "var(--danger)"; }
+        else { diffEl.style.color = "var(--accent)"; }
     }
 
     function confirmReset(){
