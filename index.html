@@ -24,8 +24,7 @@
             background: var(--bg);
             color: var(--text);
             margin: 0;
-            /* Shtuar Safe Area për iPhone */
-            padding: 15px 15px max(15px, env(safe-area-inset-bottom)) 15px; 
+            padding: 10px 15px max(15px, env(safe-area-inset-bottom)) 15px; 
             display: flex;
             justify-content: center;
         }
@@ -34,8 +33,8 @@
 
         .header {
             width: 100%;
-            padding: 5px 0 0 0;
-            margin-bottom: 15px; /* Ngjeshur nga 25px në 15px */
+            padding: 0;
+            margin-bottom: 8px; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -44,22 +43,23 @@
             box-shadow: none;
         }
 
+        /* LOGO NË EKRAN (TELEFON) */
         .header img { 
-            width: 180px;  /* Madhësia ideale për iPhone që të mos kërkojë scroll */
-            height: 180px; 
+            width: 230px;  
+            height: 230px; 
             object-fit: cover; 
             object-position: center 35%; 
-            margin-bottom: 5px; 
-            border-radius: 35px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
+            margin-bottom: 0; 
+            border-radius: 40px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.8); 
             border: none; 
         }
 
         .card {
             background: var(--card);
             border-radius: 14px;
-            padding: 12px; /* Ngjeshur hapësira e brendshme */
-            margin-bottom: 10px; /* Ngjeshur hapësira midis kartave */
+            padding: 12px; 
+            margin-bottom: 10px; 
             border: 1px solid var(--border);
         }
 
@@ -85,7 +85,6 @@
             color: white;
             padding: 10px 12px;
             border-radius: 8px;
-            /* E RËNDËSISHME: 16px ndalon iPhone të bëjë Auto-Zoom */
             font-size: 16px; 
             box-sizing: border-box;
             outline: none;
@@ -117,19 +116,18 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 5px 0; /* Ngjeshur nga 8px në 5px për të kursyer lartësi */
+            padding: 5px 0; 
             border-bottom: 1px solid rgba(255,255,255,0.03);
         }
 
         .denom-label { font-size: 0.9rem; font-weight: 700; color: #ccc; }
         .denom-input-wrapper { display: flex; align-items: center; gap: 12px; }
-        /* Lartësia e inputeve të parave pak e zvogëluar */
         .denom-input-wrapper input { width: 65px; height: 32px; text-align: center; font-weight: 700; padding: 0; }
         .row-total { min-width: 80px; text-align: right; font-size: 0.85rem; color: var(--secondary); font-family: monospace; }
 
         .status-box {
             text-align: center;
-            padding: 15px; /* Ngjeshur */
+            padding: 15px; 
             border-radius: 16px;
             background: linear-gradient(145deg, #1e2024, #141518);
             border: 1px solid var(--border);
@@ -144,13 +142,23 @@
         .btn-reset { background: #2f3337; color: white; }
         .btn-print { background: var(--success); color: #000; }
 
+        /* KËTU ËSHTË RREGULLUAR PJESA E PRINTIMIT */
         @media print {
             .btn-group, .main-actions, .btn-action { display: none !important; }
             .is-empty { display: none !important; }
             body { background: white; padding: 0; color: black; }
             .card, .status-box { border: 1px solid #ccc !important; background: white !important; color: black !important; box-shadow: none !important; break-inside: avoid; }
-            .header { background: none !important; color: black !important; border: none !important; box-shadow: none !important; }
-            .header img { box-shadow: none !important; border: none !important; } 
+            
+            .header { background: none !important; color: black !important; border: none !important; box-shadow: none !important; margin-bottom: 30px !important; }
+            
+            /* Logoja zmadhohet në 300px vetëm kur printohet */
+            .header img { 
+                width: 300px !important; 
+                height: 300px !important; 
+                box-shadow: none !important; 
+                border: none !important; 
+            } 
+            
             h3, .denom-label { color: black !important; }
             input { border: none !important; color: black !important; background: none !important; }
             input::placeholder { color: transparent !important; }
