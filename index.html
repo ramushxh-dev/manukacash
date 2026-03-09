@@ -1,245 +1,161 @@
 <!DOCTYPE html>
 <html lang="sq">
-<html lang="sq">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <title>Manuka - Cash Control</title>
-
-    <link rel="apple-touch-icon" href="icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Manuka Cash">
+    <title>Manuka - Pro Cash Control</title>
 
     <style>
         :root {
-            --bg:#0b0b0d;
-            --card:#16171a;
-            --accent:#4d8dfa;
-            --text:#e3e3e3;
-            --secondary:#9aa0a6;
-            --border:#3c4043;
-            --input-bg:#202124;
-            --success:#81c995;
-            --danger:#f28b82;
-            --manuka-bg:#747c44;
+            --bg: #0f1012;
+            --card: #1c1e22;
+            --accent: #c0a062; 
+            --accent-soft: rgba(192, 160, 98, 0.1);
+            --text: #ffffff;
+            --secondary: #9aa0a6;
+            --border: #2f3337;
+            --input-bg: #26292e;
+            --success: #00e676;
+            --danger: #ff5252;
         }
 
         body {
-            font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-            background:var(--bg);
-            color:var(--text);
-            margin:0;
-            padding:10px;
-            display:flex;
-            justify-content:center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            /* Shtuar Safe Area për iPhone */
+            padding: 15px 15px max(15px, env(safe-area-inset-bottom)) 15px; 
+            display: flex;
+            justify-content: center;
         }
 
-        .container {
-            width:100%;
-            max-width:360px;
-        }
+        .container { width: 100%; max-width: 400px; }
 
         .header {
-            width:100%;
-            height:140px;
-            margin-bottom:10px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            overflow:hidden;
-            border-radius:12px;
-            background:var(--manuka-bg);
-            border:1px solid var(--border);
+            width: 100%;
+            padding: 5px 0 0 0;
+            margin-bottom: 15px; /* Ngjeshur nga 25px në 15px */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none; 
+            border: none;
+            box-shadow: none;
         }
 
-        .header img {
-            max-height: 120px;
-            width: auto;
-            object-fit: contain;
+        .header img { 
+            width: 180px;  /* Madhësia ideale për iPhone që të mos kërkojë scroll */
+            height: 180px; 
+            object-fit: cover; 
+            object-position: center 35%; 
+            margin-bottom: 5px; 
+            border-radius: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
+            border: none; 
         }
 
         .card {
-            background:var(--card);
-            border-radius:10px;
-            padding:10px;
-            margin-bottom:6px;
-            border:1px solid var(--border);
+            background: var(--card);
+            border-radius: 14px;
+            padding: 12px; /* Ngjeshur hapësira e brendshme */
+            margin-bottom: 10px; /* Ngjeshur hapësira midis kartave */
+            border: 1px solid var(--border);
         }
 
         h3 {
-            margin:0 0 6px 0;
-            font-size:0.65rem;
-            color:var(--accent);
-            text-transform:uppercase;
-            letter-spacing:0.5px;
+            margin: 0 0 10px 0;
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        label {
-            display:block;
-            font-size:0.55rem;
-            color:var(--secondary);
-            margin-bottom:2px;
-        }
+        h3::before { content: ""; width: 3px; height: 12px; background: var(--accent); border-radius: 10px; }
+
+        label { display: block; font-size: 0.65rem; color: var(--secondary); margin-bottom: 4px; font-weight: 600; }
 
         input {
-            width:100%;
-            background:var(--input-bg);
-            border:1px solid var(--border);
-            color:white;
-            padding:5px 8px;
-            border-radius:5px;
-            font-size:0.8rem;
-            box-sizing:border-box;
-            outline:none;
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: white;
+            padding: 10px 12px;
+            border-radius: 8px;
+            /* E RËNDËSISHME: 16px ndalon iPhone të bëjë Auto-Zoom */
+            font-size: 16px; 
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
         }
 
-        .supplier-row {
-            display:flex;
-            gap:5px;
-            padding:3px 0;
-            border-bottom:1px solid #28292c;
+        input:focus { border-color: var(--accent); background: #2d3137; }
+
+        .supplier-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .supplier-row input[type="text"] { flex: 1.5; }
+        .supplier-row input[type="number"] { flex: 1; text-align: right; color: var(--success); font-weight: 700; }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 8px; }
+        .btn-action {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            text-transform: uppercase;
         }
 
-        .supplier-row input[type="number"] {
-            flex:0.8;
-            text-align:right;
-            color:var(--accent);
-            font-weight:bold;
-        }
-
-        .btn-add {
-            background:transparent;
-            color:var(--secondary);
-            border:1px dashed var(--border);
-            padding:4px;
-            width:100%;
-            border-radius:5px;
-            font-size:0.6rem;
-            margin-top:5px;
-            cursor:pointer;
-        }
+        .btn-add { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
+        .btn-remove { background: rgba(255, 82, 82, 0.1); color: var(--danger); border: 1px solid var(--danger); }
 
         .wallet-item {
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            padding:2px 0;
-            border-bottom:1px solid #232427;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0; /* Ngjeshur nga 8px në 5px për të kursyer lartësi */
+            border-bottom: 1px solid rgba(255,255,255,0.03);
         }
 
-        .denom-label {
-            font-size:0.75rem;
-            width:35px;
-            font-weight:600;
-        }
-
-        .denom-input-wrapper {
-            display:flex;
-            align-items:center;
-            gap:6px;
-        }
-
-        .denom-input-wrapper input {
-            width:45px;
-            height: 24px;
-            text-align:center;
-            padding:2px;
-            font-size: 0.75rem;
-        }
-
-        .row-total {
-            min-width:60px;
-            text-align:right;
-            font-size:0.75rem;
-            color:var(--secondary);
-            font-weight: bold;
-        }
-
-        .summary-line {
-            display:flex;
-            justify-content:space-between;
-            padding:6px 0 2px;
-            font-weight:bold;
-            font-size:0.75rem;
-        }
+        .denom-label { font-size: 0.9rem; font-weight: 700; color: #ccc; }
+        .denom-input-wrapper { display: flex; align-items: center; gap: 12px; }
+        /* Lartësia e inputeve të parave pak e zvogëluar */
+        .denom-input-wrapper input { width: 65px; height: 32px; text-align: center; font-weight: 700; padding: 0; }
+        .row-total { min-width: 80px; text-align: right; font-size: 0.85rem; color: var(--secondary); font-family: monospace; }
 
         .status-box {
-            text-align:center;
-            padding:10px;
-            border-radius:10px;
-            background:linear-gradient(145deg,#1e1f21,#16171a);
-            border:1px solid var(--border);
-            margin-top:5px;
+            text-align: center;
+            padding: 15px; /* Ngjeshur */
+            border-radius: 16px;
+            background: linear-gradient(145deg, #1e2024, #141518);
+            border: 1px solid var(--border);
+            margin-top: 10px;
         }
 
-        .big-sum {
-            font-size:1.8rem;
-            font-weight:700;
-            margin:0;
-            letter-spacing:-1px;
-        }
+        .big-sum { font-size: 2.2rem; font-weight: 800; margin: 0; letter-spacing: -1px; }
+        .status-msg { font-size: 0.7rem; font-weight: bold; margin-top: 4px; letter-spacing: 1px; }
 
-        .status-msg {
-            font-size:0.6rem;
-            font-weight:bold;
-            margin-top:2px;
-        }
+        .main-actions { display: grid; grid-template-columns: 1fr 1.5fr; gap: 12px; margin-top: 15px; margin-bottom: 20px; }
+        .btn-main { padding: 14px; border-radius: 12px; font-size: 0.8rem; font-weight: 800; border: none; cursor: pointer; }
+        .btn-reset { background: #2f3337; color: white; }
+        .btn-print { background: var(--success); color: #000; }
 
-        .actions {
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            gap:8px;
-            margin:10px 0 30px;
-        }
-
-        .btn-ui {
-            padding:10px;
-            border-radius:8px;
-            font-size:0.75rem;
-            font-weight:bold;
-            cursor:pointer;
-            border:none;
-        }
-
-        .btn-print { background:var(--accent); color:white; }
-        .btn-reset { background:#3c4043; color:white; }
-
-        /* MAGJIA E PRINTIMIT: FSHEH RRESHTAT E ZBRAZËT */
         @media print {
-            body { background:white; color:black; padding:0; }
-            .actions, .btn-add { display:none !important; }
-            
-            /* Fsheh rreshtat e keshit që janë 0 */
-            .wallet-item.is-empty, .supplier-row.is-empty {
-                display: none !important;
-            }
-
-            .card, .status-box { 
-                border:1px solid #eee; 
-                background:white; 
-                color:black; 
-                padding: 6px; 
-                margin-bottom: 4px;
-                box-shadow: none;
-            }
-
-            input { 
-                border:none !important; 
-                color:black !important; 
-                text-align:right !important; 
-                background: transparent !important; 
-            }
-
-            .header { height:90px; background:var(--manuka-bg) !important; -webkit-print-color-adjust: exact; }
-            .row-total, #theoretical, #totalCash, .denom-label { color: black !important; }
-            
-            /* Formatimi i rreshtit: 200€ x 1 = 200€ */
-            .denom-input-wrapper::before {
-                content: "x";
-                margin-right: 15px;
-                font-size: 0.7rem;
-            }
+            .btn-group, .main-actions, .btn-action { display: none !important; }
+            .is-empty { display: none !important; }
+            body { background: white; padding: 0; color: black; }
+            .card, .status-box { border: 1px solid #ccc !important; background: white !important; color: black !important; box-shadow: none !important; break-inside: avoid; }
+            .header { background: none !important; color: black !important; border: none !important; box-shadow: none !important; }
+            .header img { box-shadow: none !important; border: none !important; } 
+            h3, .denom-label { color: black !important; }
+            input { border: none !important; color: black !important; background: none !important; }
+            input::placeholder { color: transparent !important; }
+            .big-sum, #totalCash, #theoretical { color: black !important; }
+            .wallet-item { border-bottom: 1px solid #eee !important; }
         }
     </style>
 </head>
@@ -247,139 +163,154 @@
 
 <div class="container">
     <div class="header">
-        <img src="manukalogo.png" alt="Manuka Logo">
+        <img src="logo.png" alt="MANUKA" onerror="this.style.display='none'">
     </div>
 
     <div class="card">
-        <div style="display:flex; gap:8px;">
+        <div style="display:flex; gap:10px;">
             <div style="flex:1.2;">
-                <label>Data / Dita</label>
-                <input type="text" id="data" placeholder="Sot">
+                <label>📅 Data</label>
+                <input type="text" id="data">
             </div>
             <div style="flex:1;">
-                <label>Pazari Total (€)</label>
-                <input type="number" id="pazari" oninput="calculate()" placeholder="0.00" step="0.01">
+                <label>💰 Pazari Total</label>
+                <input type="number" id="pazari" min="0" oninput="calculate()" onfocus="this.select()" placeholder="0.00" step="0.01">
             </div>
         </div>
     </div>
 
     <div class="card">
-        <h3>Furnitorët / Shpenzimet</h3>
+        <h3>Furnitorët</h3>
         <div id="supplierList">
-            <div class="supplier-row is-empty">
-                <input type="text" placeholder="Emri..." oninput="calculate()">
-                <input type="number" class="s-amount" placeholder="0.00" oninput="calculate()" step="0.01">
+            <div class="supplier-row">
+                <input type="text" placeholder="Emri..." onfocus="this.select()" oninput="calculate()">
+                <input type="number" class="s-amount" min="0" placeholder="0.00" onfocus="this.select()" oninput="calculate()" step="0.01">
             </div>
         </div>
-        <button class="btn-add" onclick="addSupplier()">+ SHTO REND</button>
-        <div class="summary-line" style="color:var(--accent); border-top:1px solid #28292c; margin-top:4px; padding-top:4px;">
-            <span>NETO E PRITUR:</span>
-            <span id="theoretical">0.00 €</span>
+        <div class="btn-group">
+            <button class="btn-action btn-add" onclick="addSupplier()">+ Shto</button>
+            <button class="btn-action btn-remove" onclick="removeLastSupplier()">✕ Fshij</button>
+        </div>
+        <div style="margin-top:15px; padding-top:10px; border-top:1px solid var(--border); display:flex; justify-content:space-between;">
+            <span style="font-size:0.7rem; color:var(--secondary);">NETO E PRITUR:</span>
+            <span id="theoretical" style="font-weight:800; color:var(--accent);">0.00 €</span>
         </div>
     </div>
 
     <div class="card">
-        <h3>Arka (Kesh Fizik)</h3>
-        <div class="wallet-list">
-            <div class="wallet-item is-empty"><div class="denom-label">200€</div><div class="denom-input-wrapper"><input type="number" class="cash" data-v="200" oninput="calculate()"><span class="row-total">0.00 €</span></div></div>
-            <div class="wallet-item is-empty"><div class="denom-label">100€</div><div class="denom-input-wrapper"><input type="number" class="cash" data-v="100" oninput="calculate()"><span class="row-total">0.00 €</span></div></div>
-            <div class="wallet-item is-empty"><div class="denom-label">50€</div><div class="denom-input-wrapper"><input type="number" class="cash" data-v="50" oninput="calculate()"><span class="row-total">0.00 €</span></div></div>
-            <div class="wallet-item is-empty"><div class="denom-label">20€</div><div class="denom-input-wrapper"><input type="number" class="cash" data-v="20" oninput="calculate()"><span class="row-total">0.00 €</span></div></div>
-            <div class="wallet-item is-empty"><div class="denom-label">10€</div><div class="denom-input-wrapper"><input type="number" class="cash" data-v="10" oninput="calculate()"><span class="row-total">0.00 €</span></div></div>
-            <div class="wallet-item is-empty"><div class="denom-label">5€</div><div class="denom-input-wrapper"><input type="number" class="cash" data-v="5" oninput="calculate()"><span class="row-total">0.00 €</span></div></div>
-            
-            <div class="wallet-item is-empty" style="border:none; background:#1c1d21; margin:2px -5px; padding:4px 5px; border-radius:5px;">
-                <div class="denom-label" style="width:110px; color:var(--accent); font-size:0.7rem;">TOTAL MONEDHAT</div>
-                <input type="number" id="hekrat" oninput="calculate()" placeholder="0.00" step="0.01" style="width:80px; text-align:right; background:transparent; border:none; font-weight:bold; color:white;">
+        <h3>Arka Fizike</h3>
+        <div class="wallet-list" id="denomContainer">
+            <div class="wallet-item is-empty" id="coinsRow" style="background:var(--accent-soft); margin-top:10px; padding:10px; border-radius:8px; border:none;">
+                <div class="denom-label" style="color:var(--accent);">Monedha (Hekra)</div>
+                <input type="number" id="hekrat" min="0" oninput="calculate()" onfocus="this.select()" placeholder="0.00" step="0.01" style="width:100px; text-align:right;">
             </div>
         </div>
-        <div class="summary-line" style="border-top:1px solid #28292c; margin-top:4px; padding-top:4px;">
-            <span>TOTALI FIZIK:</span>
-            <span id="totalCash" style="color:var(--success);">0.00 €</span>
+
+        <div style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border); display:flex; justify-content:space-between;">
+            <span style="font-size:0.7rem; color:var(--secondary);">TOTALI NË ARKË:</span>
+            <span id="totalCash" style="font-weight:800; color:var(--success); font-size:1.1rem;">0.00 €</span>
         </div>
     </div>
 
     <div id="statusCard" class="status-box">
         <div id="diffSum" class="big-sum">0.00 €</div>
-        <div id="statusMsg" class="status-msg">---</div>
+        <div id="statusMsg" class="status-msg">GATI</div>
     </div>
 
-    <div class="actions">
-        <button class="btn-ui btn-reset" onclick="confirmReset()">RESET</button>
-        <button class="btn-ui btn-print" onclick="window.print()">PRINTO PDF</button>
+    <div class="main-actions">
+        <button class="btn-main btn-reset" onclick="confirmReset()">RESET</button>
+        <button class="btn-main btn-print" onclick="window.print()">PRINTO PDF</button>
     </div>
 </div>
 
 <script>
-function addSupplier(){
-    const div=document.createElement('div');
-    div.className='supplier-row is-empty';
-    div.innerHTML='<input type="text" placeholder="Emri..." oninput="calculate()"><input type="number" class="s-amount" placeholder="0.00" oninput="calculate()" step="0.01">';
-    document.getElementById('supplierList').appendChild(div);
-}
+    document.getElementById('data').value = new Date().toLocaleDateString('sq-AL', { weekday: 'short', day: 'numeric', month: 'short' });
 
-function calculate(){
-    // Pazari dhe Furnitorët
-    const pazari = parseFloat(document.getElementById('pazari').value) || 0;
-    let spent = 0;
-    document.querySelectorAll('.supplier-row').forEach(row => {
-        const val = parseFloat(row.querySelector('.s-amount').value) || 0;
-        spent += val;
-        // Markimi për fshehje në printim
-        if(val > 0) row.classList.remove('is-empty'); else row.classList.add('is-empty');
-    });
-    const theo = pazari - spent;
-    document.getElementById('theoretical').innerText = theo.toFixed(2) + " €";
-
-    // Kartëmonedhat
-    let paperCash = 0;
-    document.querySelectorAll('.wallet-item').forEach(item => {
-        const input = item.querySelector('input.cash');
-        if(input) {
-            const val = parseFloat(input.getAttribute('data-v'));
-            const count = parseFloat(input.value) || 0;
-            const sub = val * count;
-            paperCash += sub;
-            item.querySelector('.row-total').innerText = sub.toFixed(2) + " €";
-            
-            // Markimi për fshehje në printim
-            if(count > 0) item.classList.remove('is-empty'); else item.classList.add('is-empty');
-        }
+    const denomContainer = document.getElementById('denomContainer');
+    const coinsRow = document.getElementById('coinsRow');
+    const denominations = [200, 100, 50, 20, 10, 5];
+    
+    denominations.forEach(d => {
+        const div = document.createElement('div');
+        div.className = 'wallet-item is-empty';
+        div.innerHTML = `
+            <div class="denom-label">${d}€</div>
+            <div class="denom-input-wrapper">
+                <input type="number" class="cash" data-v="${d}" min="0" oninput="calculate()" onfocus="this.select()" placeholder="0">
+                <span class="row-total">0.00 €</span>
+            </div>
+        `;
+        denomContainer.insertBefore(div, coinsRow);
     });
 
-    // Monedhat
-    const hekratInput = document.getElementById('hekrat');
-    const coins = parseFloat(hekratInput.value) || 0;
-    if(coins > 0) hekratInput.closest('.wallet-item').classList.remove('is-empty'); 
-    else hekratInput.closest('.wallet-item').classList.add('is-empty');
-
-    const totalPhysical = paperCash + coins;
-    document.getElementById('totalCash').innerText = totalPhysical.toFixed(2) + " €";
-
-    // Diferenca
-    const diff = totalPhysical - theo;
-    const sumEl = document.getElementById('diffSum');
-    const msg = document.getElementById('statusMsg');
-
-    sumEl.innerText = (diff > 0 ? "+" : "") + diff.toFixed(2) + " €";
-
-    if (Math.abs(diff) < 0.01) {
-        sumEl.style.color = "var(--success)";
-        msg.innerText = "BILANCI OK";
-    } else if (diff < 0) {
-        sumEl.style.color = "var(--danger)";
-        msg.innerText = "MUNGESË NË ARKË";
-    } else {
-        sumEl.style.color = "var(--accent)";
-        msg.innerText = "TEPRICË (PLUS)";
+    function addSupplier(){
+        const div = document.createElement('div');
+        div.className = 'supplier-row';
+        div.innerHTML = '<input type="text" placeholder="Emri..." onfocus="this.select()" oninput="calculate()"><input type="number" class="s-amount" min="0" placeholder="0.00" onfocus="this.select()" oninput="calculate()" step="0.01">';
+        document.getElementById('supplierList').appendChild(div);
     }
-}
 
-function confirmReset(){
-    if(confirm("Fshij të dhënat?")) location.reload();
-}
+    function removeLastSupplier(){
+        const list = document.getElementById('supplierList');
+        if(list.children.length > 1) { list.removeChild(list.lastChild); calculate(); }
+    }
+
+    function calculate(){
+        const pazari = parseFloat(document.getElementById('pazari').value) || 0;
+        let spent = 0;
+        
+        document.querySelectorAll('.supplier-row').forEach(row => {
+            const val = parseFloat(row.querySelector('.s-amount').value) || 0;
+            const name = row.querySelector('input[type="text"]').value;
+            spent += val;
+            if(val === 0 && name === "") row.classList.add('is-empty'); else row.classList.remove('is-empty');
+        });
+
+        const theo = pazari - spent;
+        document.getElementById('theoretical').innerText = theo.toFixed(2) + " €";
+
+        let paperCash = 0;
+        document.querySelectorAll('.wallet-item').forEach(item => {
+            const input = item.querySelector('input.cash');
+            if(input) {
+                const d = parseFloat(input.getAttribute('data-v'));
+                const count = parseFloat(input.value) || 0;
+                const sub = d * count;
+                paperCash += sub;
+                item.querySelector('.row-total').innerText = sub.toFixed(2) + " €";
+                if(count === 0) item.classList.add('is-empty'); else item.classList.remove('is-empty');
+            }
+        });
+
+        const coins = parseFloat(document.getElementById('hekrat').value) || 0;
+        const totalPhys = paperCash + coins;
+        document.getElementById('totalCash').innerText = totalPhys.toFixed(2) + " €";
+
+        const diff = totalPhys - theo;
+        const diffEl = document.getElementById('diffSum');
+        const msgEl = document.getElementById('statusMsg');
+
+        diffEl.innerText = (diff > 0 ? "+" : "") + diff.toFixed(2) + " €";
+
+        if(pazari === 0 && totalPhys === 0) {
+            diffEl.style.color = "white";
+            msgEl.innerText = "GATI";
+        } else if(Math.abs(diff) < 0.01) {
+            diffEl.style.color = "var(--success)";
+            msgEl.innerText = "OK ✅";
+        } else if(diff < 0) {
+            diffEl.style.color = "var(--danger)";
+            msgEl.innerText = "MUNGESË ⚠️";
+        } else {
+            diffEl.style.color = "var(--accent)";
+            msgEl.innerText = "TEPRICË 💹";
+        }
+    }
+
+    function confirmReset(){
+        if(confirm("Dëshironi të fshini të gjitha të dhënat?")) location.reload();
+    }
 </script>
 
 </body>
-
 </html>
