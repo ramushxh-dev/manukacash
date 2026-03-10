@@ -1,296 +1,310 @@
 <!DOCTYPE html>
 <html lang="sq">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Manuka">
+    
+    <title>Manuka - Luxury Cash Manager</title>
 
-<title>Manuka - Luxury Cash Manager</title>
+    <link rel="apple-touch-icon" href="icon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon-512.png">
+    <link rel="icon" type="image/png" href="icon-512.png">
 
-<style>
-:root {
-    /* Nuancat Ultra-Dark Luxury Olive */
-    --bg: #0d0f0d;           
-    --card: #141614;         
-    --accent: #b39356;       
-    --text: #e0e0e0;         
-    --secondary: #5d665d;    
-    --border: #222622;       
-    --input-bg: #090a09;     
-    --success: #2e7d32;      
-    --danger: #962a22;       
-}
+    <style>
+        :root {
+            /* Paleta Luxury Dark Olive */
+            --bg: #0d0f0d;           
+            --card: #141614;         
+            --accent: #b39356;       
+            --text: #e0e0e0;         
+            --secondary: #5d665d;    
+            --border: #222622;       
+            --input-bg: #090a09;     
+            --success: #2e7d32;      
+            --danger: #962a22;       
+        }
 
-/* SPLASH SCREEN - FULL SCREEN */
-#splash-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--bg);
-    background-image: url('splash.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 10000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.8s ease, visibility 0.8s;
-}
+        /* SPLASH SCREEN - MBULON KREJT EKRANIN */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg);
+            background-image: url('splash.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    margin: 0;
-    padding: env(safe-area-inset-top) 15px calc(env(safe-area-inset-bottom) + 30px) 15px;
-    display: flex;
-    justify-content: center;
-    min-height: 100vh;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            /* Përshtatja për notch-in e iPhone */
+            padding: env(safe-area-inset-top) 15px calc(env(safe-area-inset-bottom) + 30px) 15px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-.container { width: 100%; max-width: 400px; }
+        .container { width: 100%; max-width: 400px; }
 
-.header-box {
-    width: 100%;
-    height: 100px;
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
+        .header-box {
+            width: 100%;
+            height: 100px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
 
-.logo-main { width: 100%; height: 80%; object-fit: contain; }
+        .logo-main { width: 100%; height: 80%; object-fit: contain; }
 
-.card {
-    background: var(--card);
-    border-radius: 14px;
-    padding: 15px;
-    margin-bottom: 12px;
-    border: 1px solid var(--border);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-}
+        .card {
+            background: var(--card);
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
 
-h3 {
-    margin: 0 0 12px 0;
-    font-size: .75rem;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+        h3 {
+            margin: 0 0 12px 0;
+            font-size: .75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-label { display: block; font-size: .65rem; color: var(--secondary); margin-bottom: 4px; text-transform: uppercase; }
+        label { display: block; font-size: .65rem; color: var(--secondary); margin-bottom: 4px; text-transform: uppercase; }
 
-input {
-    width: 100%;
-    background: var(--input-bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 10px;
-    border-radius: 10px;
-    font-size: 16px;
-    box-sizing: border-box;
-    outline: none;
-    transition: border 0.3s ease;
-}
+        input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border 0.3s ease;
+        }
 
-input:focus { border-color: var(--accent); }
+        input:focus { border-color: var(--accent); }
 
-.supplier-row { display: flex; gap: 8px; margin-bottom: 8px; }
-.supplier-row input[type="text"] { flex: 1.5; }
-.supplier-row input[type="number"] { flex: 1; text-align: right; color: var(--success); font-weight: bold; }
+        .supplier-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .supplier-row input[type="text"] { flex: 1.5; }
+        .supplier-row input[type="number"] { flex: 1; text-align: right; color: var(--success); font-weight: bold; }
 
-.btn-group { display: flex; gap: 10px; margin-top: 8px; }
-.btn-action { 
-    flex: 1; padding: 12px; border-radius: 10px; font-size: .7rem; 
-    font-weight: bold; cursor: pointer; border: none; text-transform: uppercase; 
-}
-.btn-add { background: rgba(179, 147, 86, 0.1); color: var(--accent); border: 1px solid var(--accent); }
-.btn-remove { background: rgba(150, 42, 34, 0.1); color: var(--danger); border: 1px solid var(--danger); }
+        .btn-group { display: flex; gap: 10px; margin-top: 8px; }
+        .btn-action { 
+            flex: 1; padding: 12px; border-radius: 10px; font-size: .7rem; 
+            font-weight: bold; cursor: pointer; border: none; text-transform: uppercase; 
+        }
+        .btn-add { background: rgba(179, 147, 86, 0.1); color: var(--accent); border: 1px solid var(--accent); }
+        .btn-remove { background: rgba(150, 42, 34, 0.1); color: var(--danger); border: 1px solid var(--danger); }
 
-.wallet-item { 
-    display: flex; align-items: center; justify-content: space-between; 
-    padding: 8px 0; border-bottom: 1px solid var(--border); 
-}
-.denom-label { font-size: .9rem; font-weight: 600; color: #aaa; }
-.row-total { min-width: 80px; text-align: right; font-size: .85rem; color: var(--secondary); }
+        .wallet-item { 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 8px 0; border-bottom: 1px solid var(--border); 
+        }
+        .denom-label { font-size: .9rem; font-weight: 600; color: #aaa; }
+        .row-total { min-width: 80px; text-align: right; font-size: .85rem; color: var(--secondary); }
 
-.status-box {
-    text-align: center;
-    padding: 20px;
-    border-radius: 16px;
-    background: #090a09;
-    border: 1px solid var(--border);
-    margin-top: 10px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-}
+        .status-box {
+            text-align: center;
+            padding: 20px;
+            border-radius: 16px;
+            background: #090a09;
+            border: 1px solid var(--border);
+            margin-top: 10px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
 
-.theo-info { font-size: .75rem; color: var(--secondary); margin-bottom: 8px; letter-spacing: 0.5px; }
-.theo-val { color: var(--text); font-weight: bold; font-size: 1.1rem; }
-.big-sum { 
-    font-size: 2.4rem; font-weight: 800; margin: 5px 0; 
-    text-shadow: 0 0 15px rgba(179, 147, 86, 0.2);
-}
+        .theo-info { font-size: .75rem; color: var(--secondary); margin-bottom: 8px; letter-spacing: 0.5px; }
+        .theo-val { color: var(--text); font-weight: bold; font-size: 1.1rem; }
+        .big-sum { 
+            font-size: 2.4rem; font-weight: 800; margin: 5px 0; 
+            text-shadow: 0 0 15px rgba(179, 147, 86, 0.2);
+        }
 
-.main-actions { display: grid; grid-template-columns: 1fr 1.5fr; gap: 12px; margin-top: 15px; }
-.btn-main { padding: 16px; border-radius: 12px; font-size: .85rem; font-weight: 800; border: none; cursor: pointer; }
-.btn-reset { background: #222; color: #888; }
-.btn-print { background: var(--accent); color: #000; }
+        .main-actions { display: grid; grid-template-columns: 1fr 1.5fr; gap: 12px; margin-top: 15px; }
+        .btn-main { padding: 16px; border-radius: 12px; font-size: .85rem; font-weight: 800; border: none; cursor: pointer; }
+        .btn-reset { background: #222; color: #888; }
+        .btn-print { background: var(--accent); color: #000; }
 
-@media print {
-    #splash-screen { display: none !important; }
-    body { background: white !important; color: black !important; padding: 0 !important; }
-    .container { max-width: 100% !important; }
-    .main-actions, .btn-group, .btn-action { display: none !important; }
-    .card { border: none !important; border-bottom: 1px solid #eee !important; background: none !important; }
-    .status-box { background: #f9f9f9 !important; border: 1px solid #ccc !important; color: black !important; }
-}
-</style>
+        /* OPTIMIZIMI PËR PRINTIM */
+        @media print {
+            #splash-screen { display: none !important; }
+            body { background: white !important; color: black !important; padding: 0 !important; }
+            .container { max-width: 100% !important; }
+            .main-actions, .btn-group, .btn-action { display: none !important; }
+            .card { border: none !important; border-bottom: 1px solid #eee !important; background: none !important; }
+            .status-box { background: #f9f9f9 !important; border: 1px solid #ccc !important; color: black !important; }
+            .header-box { box-shadow: none !important; border: none !important; }
+            .logo-main { filter: brightness(0); }
+        }
+    </style>
 </head>
-
 <body>
 
-<div id="splash-screen"></div>
+    <div id="splash-screen"></div>
 
-<div class="container">
-
-    <div class="header-box">
-        <img src="logo.svg" class="logo-main" alt="Logo">
-    </div>
-
-    <div class="card">
-        <div style="display:flex;gap:12px;">
-            <div style="flex:1.2;">
-                <label>📅 Data</label>
-                <input type="text" id="data">
-            </div>
-            <div style="flex:1;">
-                <label>💰 Pazari Total</label>
-                <input type="number" id="pazari" oninput="calculate()" placeholder="0.00">
-            </div>
+    <div class="container">
+        <div class="header-box">
+            <img src="logo.svg" class="logo-main" alt="Manuka Logo">
         </div>
-    </div>
 
-    <div class="card">
-        <h3>Furnitorët</h3>
-        <div id="supplierList">
-            <div class="supplier-row">
-                <input type="text" placeholder="Emri...">
-                <input type="number" class="s-amount" placeholder="0.00" oninput="calculate()">
+        <div class="card">
+            <div style="display:flex;gap:12px;">
+                <div style="flex:1.2;">
+                    <label>📅 Data</label>
+                    <input type="text" id="data">
+                </div>
+                <div style="flex:1;">
+                    <label>💰 Pazari Total</label>
+                    <input type="number" id="pazari" oninput="calculate()" placeholder="0.00" inputmode="decimal">
+                </div>
             </div>
         </div>
-        <div class="btn-group">
-            <button class="btn-action btn-add" onclick="addSupplier()">+ Shto</button>
-            <button class="btn-action btn-remove" onclick="removeLastSupplier()">✕</button>
+
+        <div class="card">
+            <h3>Furnitorët</h3>
+            <div id="supplierList">
+                <div class="supplier-row">
+                    <input type="text" placeholder="Emri...">
+                    <input type="number" class="s-amount" placeholder="0.00" oninput="calculate()" inputmode="decimal">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn-action btn-add" onclick="addSupplier()">+ Shto</button>
+                <button class="btn-action btn-remove" onclick="removeLastSupplier()">✕</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Arka Fizike</h3>
+            <div id="denomContainer"></div>
+            <div class="wallet-item" style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">
+                <div class="denom-label">Hekrat</div>
+                <input type="number" id="hekrat" oninput="calculate()" style="width:100px;text-align:right;" inputmode="decimal">
+            </div>
+        </div>
+
+        <div class="status-box">
+            <div class="theo-info">DUHET TË JENË: <span id="theoretical" class="theo-val">0.00 €</span></div>
+            <div style="font-size:.65rem; font-weight:800; color:var(--secondary); letter-spacing: 1px;">DIFERENCA</div>
+            <div id="diffSum" class="big-sum">0.00 €</div>
+        </div>
+
+        <div class="main-actions">
+            <button class="btn-main btn-reset" onclick="confirmReset()">RESET</button>
+            <button class="btn-main btn-print" onclick="window.print()">PRINTO PDF</button>
         </div>
     </div>
 
-    <div class="card">
-        <h3>Arka Fizike</h3>
-        <div id="denomContainer"></div>
-        <div class="wallet-item" style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">
-            <div class="denom-label">Hekrat</div>
-            <input type="number" id="hekrat" oninput="calculate()" style="width:100px;text-align:right;">
-        </div>
-    </div>
+    <script>
+        // Logjika e Splash Screen
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.style.visibility = 'hidden';
+                    splash.remove(); // E heqim krejt që të mos zërë memorie
+                }, 800);
+            }, 2500); // 2.5 sekonda shfaqje
+        });
 
-    <div class="status-box">
-        <div class="theo-info">DUHET TË JENË: <span id="theoretical" class="theo-val">0.00 €</span></div>
-        <div style="font-size:.65rem; font-weight:800; color:var(--secondary); letter-spacing: 1px;">DIFERENCA</div>
-        <div id="diffSum" class="big-sum">0.00 €</div>
-    </div>
+        // Vendosja e datës automatike
+        document.getElementById('data').value = new Date().toLocaleDateString('sq-AL', {weekday:'short',day:'numeric',month:'short'});
 
-    <div class="main-actions">
-        <button class="btn-main btn-reset" onclick="confirmReset()">RESET</button>
-        <button class="btn-main btn-print" onclick="window.print()">PRINTO PDF</button>
-    </div>
+        // Gjenerimi i denominimeve
+        const denominations=[200,100,50,20,10,5];
+        const container=document.getElementById('denomContainer');
 
-</div>
+        denominations.forEach(d=>{
+            const div=document.createElement('div');
+            div.className='wallet-item';
+            div.innerHTML= `
+                <div class="denom-label">${d}€</div>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <input type="number" class="cash" data-v="${d}" oninput="calculate()" style="width:65px;text-align:center;" inputmode="numeric">
+                    <span class="row-total">0.00 €</span>
+                </div>`;
+            container.appendChild(div);
+        });
 
-<script>
-// Splash Screen Logic
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        const splash = document.getElementById('splash-screen');
-        splash.style.opacity = '0';
-        setTimeout(() => splash.style.visibility = 'hidden', 800);
-    }, 2000); 
-});
+        function addSupplier(){
+            const div=document.createElement('div');
+            div.className='supplier-row';
+            div.innerHTML='<input type="text" placeholder="Emri..."><input type="number" class="s-amount" placeholder="0.00" oninput="calculate()" inputmode="decimal">';
+            document.getElementById('supplierList').appendChild(div);
+        }
 
-// Auto Date
-document.getElementById('data').value = new Date().toLocaleDateString('sq-AL', {weekday:'short',day:'numeric',month:'short'});
+        function removeLastSupplier(){
+            const list=document.getElementById('supplierList');
+            if(list.children.length>1) list.removeChild(list.lastChild);
+            calculate();
+        }
 
-const denominations=[200,100,50,20,10,5];
-const container=document.getElementById('denomContainer');
+        function calculate(){
+            const pazari = parseFloat(document.getElementById('pazari').value) || 0;
+            let furnitoret = 0;
+            document.querySelectorAll('.s-amount').forEach(i => furnitoret += (parseFloat(i.value) || 0));
 
-denominations.forEach(d=>{
-    const div=document.createElement('div');
-    div.className='wallet-item';
-    div.innerHTML= `
-        <div class="denom-label">${d}€</div>
-        <div style="display:flex;align-items:center;gap:10px;">
-            <input type="number" class="cash" data-v="${d}" oninput="calculate()" style="width:65px;text-align:center;">
-            <span class="row-total">0.00 €</span>
-        </div>`;
-    container.appendChild(div);
-});
+            let arka = 0;
+            document.querySelectorAll('.cash').forEach(i => {
+                const v = parseFloat(i.getAttribute('data-v'));
+                const s = (parseFloat(i.value) || 0) * v;
+                arka += s;
+                i.nextElementSibling.innerText = s.toFixed(2) + " €";
+            });
 
-function addSupplier(){
-    const div=document.createElement('div');
-    div.className='supplier-row';
-    div.innerHTML='<input type="text" placeholder="Emri..."><input type="number" class="s-amount" placeholder="0.00" oninput="calculate()">';
-    document.getElementById('supplierList').appendChild(div);
-}
+            arka += (parseFloat(document.getElementById('hekrat').value) || 0);
+            const netoPritur = pazari - furnitoret;
+            document.getElementById('theoretical').innerText = netoPritur.toFixed(2) + " €";
 
-function removeLastSupplier(){
-    const list=document.getElementById('supplierList');
-    if(list.children.length>1) list.removeChild(list.lastChild);
-    calculate();
-}
+            const diff = arka - netoPritur;
+            const diffEl = document.getElementById('diffSum');
+            diffEl.innerText = (diff > 0 ? "+" : "") + diff.toFixed(2) + " €";
 
-function calculate(){
-    const pazari=parseFloat(document.getElementById('pazari').value)||0;
-    let furnitoret=0;
-    document.querySelectorAll('.s-amount').forEach(i=>furnitoret+=(parseFloat(i.value)||0));
+            // Ngjyrat e diferencës
+            if(Math.abs(diff) < 0.01) {
+                diffEl.style.color = "var(--accent)";
+            } else if(diff < 0) {
+                diffEl.style.color = "var(--danger)";
+            } else {
+                diffEl.style.color = "#00e676"; // Green per fitim te teperte
+            }
+        }
 
-    let arka=0;
-    document.querySelectorAll('.cash').forEach(i=>{
-        const v=parseFloat(i.getAttribute('data-v'));
-        const s=(parseFloat(i.value)||0)*v;
-        arka+=s;
-        i.nextElementSibling.innerText=s.toFixed(2)+" €";
-    });
-
-    arka+=(parseFloat(document.getElementById('hekrat').value)||0);
-    const netoPritur=pazari-furnitoret;
-    document.getElementById('theoretical').innerText=netoPritur.toFixed(2)+" €";
-
-    const diff=arka-netoPritur;
-    const diffEl=document.getElementById('diffSum');
-    diffEl.innerText=(diff>0?"+":"")+diff.toFixed(2)+" €";
-
-    if(Math.abs(diff)<0.01) diffEl.style.color="var(--accent)";
-    else if(diff<0) diffEl.style.color="var(--danger)";
-    else diffEl.style.color="#00e676";
-}
-
-function confirmReset(){
-    if(confirm("Dëshironi të fshini të gjitha të dhënat?")) location.reload();
-}
-</script>
-
+        function confirmReset(){
+            if(confirm("Dëshironi të fshini të gjitha të dhënat?")) {
+                location.reload();
+            }
+        }
+    </script>
 </body>
 </html>
