@@ -1,291 +1,310 @@
 <!DOCTYPE html>
 <html lang="sq">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Manuka - Cash Control Final</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <style>
-        :root {
-            --bg: #0f1012;
-            --card: #1c1e22;
-            --accent: #c0a062; 
-            --text: #ffffff;
-            --secondary: #9aa0a6;
-            --border: #2f3337;
-            --input-bg: #26292e;
-            --success: #00e676;
-            --danger: #ff5252;
-        }
+<title>Manuka - Menaxhimi i Arkës</title>
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 0 15px 30px 15px;
-            display: flex;
-            justify-content: center;
-        }
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-        .container { width: 100%; max-width: 400px; }
+<style>
+:root{
+--bg:#0f1012;
+--card:#1c1e22;
+--accent:#c0a062;
+--text:#ffffff;
+--secondary:#9aa0a6;
+--border:#2f3337;
+--input-bg:#26292e;
+--success:#00e676;
+--danger:#ff5252;
+}
 
-        .header-box {
-            width: 100%;
-            padding: 15px 0 10px 0;
-            display: flex;
-            justify-content: center;
-        }
+/* --- STILI I SPLASH SCREEN --- */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    transition: opacity 0.6s ease, visibility 0.6s;
+}
 
-        .header-box img {
-            width: 100%;
-            height: auto;
-            max-height: 250px;
-            object-fit: contain;
-            border-radius: 12px;
-        }
+#splash-screen img {
+    max-width: 180px;
+    height: auto;
+    margin-bottom: 20px;
+    animation: fadeInOut 1.5s infinite ease-in-out;
+}
 
-        .card {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 8px;
-            border: 1px solid var(--border);
-        }
+@keyframes fadeInOut {
+    0% { transform: scale(0.95); opacity: 0.7; }
+    50% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.7; }
+}
 
-        h3 {
-            margin: 0 0 8px 0;
-            font-size: 0.7rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+/* --- STILI I FAQES --- */
+body{
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+background:var(--bg);
+color:var(--text);
+margin:0;
+padding:0 15px 30px 15px;
+display:flex;
+justify-content:center;
+-webkit-print-color-adjust: exact !important; 
+print-color-adjust: exact !important;
+}
 
-        label { display: block; font-size: 0.6rem; color: var(--secondary); margin-bottom: 3px; }
+.container{ width:100%; max-width:400px; }
 
-        input {
-            width: 100%;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            color: white;
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 16px; 
-            box-sizing: border-box;
-            outline: none;
-        }
+.header-box{
+width:100%;
+height: 110px;
+margin:15px 0;
+display:flex;
+align-items:center;
+justify-content:center;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:12px;
+padding: 0;
+overflow: hidden;
+box-sizing:border-box;
+}
 
-        .supplier-row { display: flex; gap: 6px; margin-bottom: 6px; }
-        .supplier-row input[type="text"] { flex: 1.5; }
-        .supplier-row input[type="number"] { flex: 1; text-align: right; color: var(--success); font-weight: bold; }
+.logo-main{ width: 100%; height: 100%; object-fit: contain; }
 
-        .btn-group { display: flex; gap: 8px; margin-top: 5px; }
-        .btn-action {
-            flex: 1;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.65rem;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            text-transform: uppercase;
-        }
+.card{
+background:var(--card);
+border-radius:12px;
+padding:12px;
+margin-bottom:8px;
+border:1px solid var(--border);
+}
 
-        .btn-add { background: rgba(192, 160, 98, 0.1); color: var(--accent); border: 1px solid var(--accent); }
-        .btn-remove { background: rgba(255, 82, 82, 0.1); color: var(--danger); border: 1px solid var(--danger); }
+h3{
+margin:0 0 8px 0;
+font-size:.7rem;
+color:var(--accent);
+text-transform:uppercase;
+letter-spacing:1px;
+display:flex;
+align-items:center;
+gap:6px;
+}
 
-        .wallet-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 5px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-        }
+label{ display:block; font-size:.6rem; color:var(--secondary); margin-bottom:3px; }
 
-        .denom-label { font-size: 0.85rem; font-weight: bold; color: #ccc; }
-        .row-total { min-width: 70px; text-align: right; font-size: 0.8rem; color: var(--secondary); }
+input{
+width:100%;
+background:var(--input-bg);
+border:1px solid var(--border);
+color:white;
+padding:8px;
+border-radius:8px;
+font-size:16px;
+box-sizing:border-box;
+outline:none;
+}
 
-        .status-box {
-            text-align: center;
-            padding: 15px;
-            border-radius: 12px;
-            background: #141518;
-            border: 1px solid var(--border);
-            margin-top: 5px;
-        }
+.supplier-row{ display:flex; gap:6px; margin-bottom:6px; }
+.supplier-row input[type="text"]{ flex:1.5; }
+.supplier-row input[type="number"]{ flex:1; text-align:right; color:var(--success); font-weight:bold; }
 
-        .theo-info { font-size: 0.8rem; color: var(--secondary); margin-bottom: 5px; }
-        .theo-val { color: var(--text); font-weight: bold; font-size: 1.1rem; }
-        .big-sum { font-size: 2.2rem; font-weight: 800; margin: 0; }
+.btn-group{ display:flex; gap:8px; margin-top:5px; }
+.btn-action{ flex:1; padding:10px; border-radius:8px; font-size:.65rem; font-weight:bold; cursor:pointer; border:none; text-transform:uppercase; }
+.btn-add{ background:rgba(192,160,98,.1); color:var(--accent); border:1px solid var(--accent); }
+.btn-remove{ background:rgba(255,82,82,.1); color:var(--danger); border:1px solid var(--danger); }
 
-        .main-actions { display: grid; grid-template-columns: 1fr 1.5fr; gap: 10px; margin-top: 10px; }
-        .btn-main { padding: 15px; border-radius: 10px; font-size: 0.8rem; font-weight: 800; border: none; cursor: pointer; }
-        .btn-reset { background: #2f3337; color: white; }
-        .btn-print { background: var(--success); color: #000; }
+.wallet-item{ display:flex; align-items:center; justify-content:space-between; padding:5px 0; border-bottom:1px solid rgba(255,255,255,.03); }
+.denom-label{ font-size:.85rem; font-weight:bold; color:#ccc; }
+.row-total{ min-width:70px; text-align:right; font-size:.8rem; color:var(--secondary); }
 
-        /* RREGULLIMI TOTAL PËR PRINTIM 1 FAQE A4 */
-        @media print {
-            @page {
-                size: A4;
-                margin: 0; /* Heqim margins që shton browseri */
-            }
-            body {
-                background: white;
-                color: black;
-                padding: 10mm; /* Hapësira brenda faqes */
-                display: block;
-                -webkit-print-color-adjust: exact;
-            }
-            .container {
-                max-width: 100%;
-                width: 100%;
-                /* Zvogëlojmë krejt përmbajtjen që të zërë vend */
-                transform: scale(0.92);
-                transform-origin: top center;
-            }
-            .btn-group, .main-actions, .btn-action {
-                display: none !important;
-            }
-            .card, .status-box {
-                background: white !important;
-                color: black !important;
-                border: 1px solid #eee !important;
-                margin-bottom: 10px !important;
-                page-break-inside: avoid; /* Ndalon ndarjen në 2 faqe */
-            }
-            .header-box img { 
-                max-height: 180px !important; 
-                margin-bottom: 10px;
-            }
-            input {
-                border: none !important;
-                color: black !important;
-                background: transparent !important;
-                font-size: 14px;
-            }
-            .big-sum { font-size: 28pt !important; color: black !important; }
-            .theo-val { color: black !important; }
-        }
-    </style>
+.status-box{
+text-align:center;
+padding:15px;
+border-radius:12px;
+background:#141518;
+border:1px solid var(--border);
+margin-top:5px;
+}
+
+.theo-info{ font-size:.8rem; color:var(--secondary); margin-bottom:5px; }
+.theo-val{ color:var(--text); font-weight:bold; font-size:1.1rem; }
+.big-sum{ font-size:2.2rem; font-weight:800; margin:0; }
+
+.main-actions{ display:grid; grid-template-columns:1fr 1.5fr; gap:10px; margin-top:10px; }
+.btn-main{ padding:15px; border-radius:10px; font-size:.8rem; font-weight:800; border:none; cursor:pointer; }
+.btn-reset{ background:#2f3337; color:white; }
+.btn-print{ background:var(--success); color:#000; }
+
+/* -------------------------------------------------------------------------- */
+/* OPTIMIZIMI PËR PRINTIM */
+/* -------------------------------------------------------------------------- */
+@media print {
+  @page { size: A4; margin: 1cm; }
+  body { background: white !important; color: black !important; padding: 0 !important; }
+  #splash-screen { display: none !important; }
+  .container { max-width: 100% !important; }
+  .header-box { height: 70px !important; border: none !important; background: none !important; }
+  .logo-main { filter: brightness(0) !important; max-height: 70px !important; }
+  .card { border: none !important; border-bottom: 1px solid #ddd !important; background: none !important; border-radius: 0 !important; }
+  h3 { font-size: 10px !important; color: black !important; border-bottom: 1px solid #000; }
+  input { background: none !important; color: black !important; border: none !important; font-weight: bold; }
+  .status-box { background: #f1f1f1 !important; border: 1px solid #ccc !important; }
+  .main-actions, .btn-group, .btn-action { display: none !important; }
+}
+</style>
 </head>
+
 <body>
 
+<div id="splash-screen">
+    <img src="splash.png" alt="Manuka Logo">
+    <div style="color: var(--accent); font-size: 0.7rem; letter-spacing: 2px;">DUKE U NGARKUAR...</div>
+</div>
+
 <div class="container">
-    <div class="header-box">
-        <img src="logo.png" alt="Manuka Restaurant">
-    </div>
 
-    <div class="card">
-        <div style="display:flex; gap:10px;">
-            <div style="flex:1.2;">
-                <label>📅 Data</label>
-                <input type="text" id="data">
-            </div>
-            <div style="flex:1;">
-                <label>💰 Pazari Total</label>
-                <input type="number" id="pazari" oninput="calculate()" placeholder="0.00">
-            </div>
+<div class="header-box">
+    <img src="logo.svg" class="logo-main" alt="Manuka Logo">
+</div>
+
+<div class="card">
+    <div style="display:flex;gap:10px;">
+        <div style="flex:1.2;">
+            <label>📅 Data</label>
+            <input type="text" id="data">
         </div>
-    </div>
-
-    <div class="card">
-        <h3>Furnitorët</h3>
-        <div id="supplierList">
-            <div class="supplier-row">
-                <input type="text" placeholder="Emri...">
-                <input type="number" class="s-amount" placeholder="0.00" oninput="calculate()">
-            </div>
+        <div style="flex:1;">
+            <label>💰 Pazari Total</label>
+            <input type="number" id="pazari" oninput="calculate()" placeholder="0.00">
         </div>
-        <div class="btn-group">
-            <button class="btn-action btn-add" onclick="addSupplier()">+ Shto</button>
-            <button class="btn-action btn-remove" onclick="removeLastSupplier()">✕</button>
-        </div>
-    </div>
-
-    <div class="card">
-        <h3>Arka Fizike</h3>
-        <div id="denomContainer"></div>
-        <div class="wallet-item" style="border-top: 1px solid var(--border); margin-top: 5px; padding-top: 5px;">
-            <div class="denom-label">Hekrat</div>
-            <input type="number" id="hekrat" oninput="calculate()" style="width: 80px; text-align: right;">
-        </div>
-    </div>
-
-    <div class="status-box">
-        <div class="theo-info">DUHET TË JENË: <span id="theoretical" class="theo-val">0.00 €</span></div>
-        <div style="font-size: 0.6rem; font-weight: 800; margin-bottom: 2px; color: var(--secondary);">DIFERENCA (+/-)</div>
-        <div id="diffSum" class="big-sum">0.00 €</div>
-    </div>
-
-    <div class="main-actions">
-        <button class="btn-main btn-reset" onclick="confirmReset()">RESET</button>
-        <button class="btn-main btn-print" onclick="window.print()">PRINTO PDF</button>
     </div>
 </div>
 
-<script>
-    document.getElementById('data').value = new Date().toLocaleDateString('sq-AL', { weekday: 'short', day: 'numeric', month: 'short' });
+<div class="card">
+    <h3>Furnitorët</h3>
+    <div id="supplierList">
+        <div class="supplier-row">
+            <input type="text" placeholder="Emri...">
+            <input type="number" class="s-amount" placeholder="0.00" oninput="calculate()">
+        </div>
+    </div>
+    <div class="btn-group">
+        <button class="btn-action btn-add" onclick="addSupplier()">+ Shto</button>
+        <button class="btn-action btn-remove" onclick="removeLastSupplier()">✕</button>
+    </div>
+</div>
 
-    const denominations = [200, 100, 50, 20, 10, 5];
-    const container = document.getElementById('denomContainer');
-    
-    denominations.forEach(d => {
-        const div = document.createElement('div');
-        div.className = 'wallet-item';
-        div.innerHTML = `
-            <div class="denom-label">${d}€</div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <input type="number" class="cash" data-v="${d}" oninput="calculate()" style="width: 55px; text-align: center; padding: 4px;">
-                <span class="row-total">0.00 €</span>
-            </div>
-        `;
-        container.appendChild(div);
+<div class="card">
+    <h3>Arka Fizike</h3>
+    <div id="denomContainer"></div>
+    <div class="wallet-item" style="border-top:1px solid var(--border);margin-top:5px;padding-top:5px;">
+        <div class="denom-label">Hekrat</div>
+        <input type="number" id="hekrat" oninput="calculate()" style="width:80px;text-align:right;">
+    </div>
+</div>
+
+<div class="status-box">
+    <div class="theo-info">
+        NE KULET DUHET TË JENË: <span id="theoretical" class="theo-val">0.00 €</span>
+    </div>
+    <div style="font-size:.65rem; font-weight:800; margin-bottom:2px; color:var(--secondary); letter-spacing: 1px;">
+        PLUS / MINUS KE DALË
+    </div>
+    <div id="diffSum" class="big-sum">0.00 €</div>
+</div>
+
+<div class="main-actions">
+    <button class="btn-main btn-reset" onclick="confirmReset()">RESET</button>
+    <button class="btn-main btn-print" onclick="window.print()">PRINTO PDF</button>
+</div>
+
+</div>
+
+<script>
+// Logjika e Splash Screen
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        const splash = document.getElementById('splash-screen');
+        splash.style.opacity = '0';
+        splash.style.visibility = 'hidden';
+        // Hiqe krejt nga kodi pas animacionit që mos të pengojë klikimet
+        setTimeout(() => splash.remove(), 600);
+    }, 2000); // Shfaqet për 2 sekonda
+});
+
+// Vendosja e datës automatike
+document.getElementById('data').value = new Date().toLocaleDateString('sq-AL', {weekday:'short',day:'numeric',month:'short'});
+
+const denominations=[200,100,50,20,10,5];
+const container=document.getElementById('denomContainer');
+
+denominations.forEach(d=>{
+    const div=document.createElement('div');
+    div.className='wallet-item';
+    div.innerHTML= `
+        <div class="denom-label">${d}€</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+            <input type="number" class="cash" data-v="${d}" oninput="calculate()" style="width:55px;text-align:center;padding:4px;">
+            <span class="row-total">0.00 €</span>
+        </div>`;
+    container.appendChild(div);
+});
+
+function addSupplier(){
+    const div=document.createElement('div');
+    div.className='supplier-row';
+    div.innerHTML='<input type="text" placeholder="Emri..."><input type="number" class="s-amount" placeholder="0.00" oninput="calculate()">';
+    document.getElementById('supplierList').appendChild(div);
+}
+
+function removeLastSupplier(){
+    const list=document.getElementById('supplierList');
+    if(list.children.length>1) list.removeChild(list.lastChild);
+    calculate();
+}
+
+function calculate(){
+    const pazari=parseFloat(document.getElementById('pazari').value)||0;
+    let furnitoret=0;
+    document.querySelectorAll('.s-amount').forEach(i=>furnitoret+=(parseFloat(i.value)||0));
+
+    let arka=0;
+    document.querySelectorAll('.cash').forEach(i=>{
+        const v=parseFloat(i.getAttribute('data-v'));
+        const s=(parseFloat(i.value)||0)*v;
+        arka+=s;
+        i.nextElementSibling.innerText=s.toFixed(2)+" €";
     });
 
-    function addSupplier(){
-        const div = document.createElement('div');
-        div.className = 'supplier-row';
-        div.innerHTML = '<input type="text" placeholder="Emri..."><input type="number" class="s-amount" placeholder="0.00" oninput="calculate()">';
-        document.getElementById('supplierList').appendChild(div);
-    }
+    arka+=(parseFloat(document.getElementById('hekrat').value)||0);
+    const netoPritur=pazari-furnitoret;
+    document.getElementById('theoretical').innerText=netoPritur.toFixed(2)+" €";
 
-    function removeLastSupplier(){
-        const list = document.getElementById('supplierList');
-        if(list.children.length > 1) list.removeChild(list.lastChild);
-        calculate();
-    }
+    const diff=arka-netoPritur;
+    const diffEl=document.getElementById('diffSum');
+    
+    diffEl.innerText=(diff>0?"+":"")+diff.toFixed(2)+" €";
 
-    function calculate(){
-        const pazari = parseFloat(document.getElementById('pazari').value) || 0;
-        let furnitoret = 0;
-        document.querySelectorAll('.s-amount').forEach(i => furnitoret += (parseFloat(i.value) || 0));
-        
-        let arka = 0;
-        document.querySelectorAll('.cash').forEach(i => {
-            const v = parseFloat(i.getAttribute('data-v'));
-            const s = (parseFloat(i.value) || 0) * v;
-            arka += s;
-            i.nextElementSibling.innerText = s.toFixed(2) + " €";
-        });
-        arka += (parseFloat(document.getElementById('hekrat').value) || 0);
+    if(Math.abs(diff)<0.01) diffEl.style.color="var(--success)";
+    else if(diff<0) diffEl.style.color="var(--danger)";
+    else diffEl.style.color="var(--accent)";
+}
 
-        const netoPritur = pazari - furnitoret;
-        document.getElementById('theoretical').innerText = netoPritur.toFixed(2) + " €";
-        const diff = arka - netoPritur;
-        const diffEl = document.getElementById('diffSum');
-        diffEl.innerText = (diff > 0 ? "+" : "") + diff.toFixed(2) + " €";
-        
-        if (Math.abs(diff) < 0.01) { diffEl.style.color = "var(--success)"; }
-        else if (diff < 0) { diffEl.style.color = "var(--danger)"; }
-        else { diffEl.style.color = "var(--accent)"; }
-    }
-
-    function confirmReset(){
-        if(confirm("Dëshironi të fshini të gjitha të dhënat?")) location.reload();
-    }
+function confirmReset(){
+    if(confirm("Dëshironi të fshini të gjitha të dhënat?")) location.reload();
+}
 </script>
 
 </body>
