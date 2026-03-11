@@ -2,261 +2,341 @@
 <html lang="sq">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Manuka">
-    
-    <title>Manuka - Luxury Cash Manager</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Manuka - Raporti Ditor</title>
     <style>
         :root {
-            --bg: #0d0f0d;           
-            --card: #141614;         
-            --accent: #b39356;       
-            --text: #e0e0e0;         
-            --secondary: #5d665d;    
-            --border: #222622;       
-            --input-bg: #090a09;     
-            --success: #2e7d32;      
-            --danger: #962a22;       
+            --wolt-blue: #009DE0;
+            --bg: #F5F7F8;
+            --card: #FFFFFF;
+            --text: #202125;
+            --sub-text: #70777E;
+            --border: #EBEEF0;
+            --white: #FFFFFF;
+            --whatsapp-green: #25D366;
         }
 
-        #splash-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: var(--bg);
-            background-image: url('splash.png');
-            background-size: cover;
-            background-position: center;
-            z-index: 10000;
-            transition: opacity 0.8s ease, visibility 0.8s;
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0A0B0C;
+                --card: #18191A;
+                --text: #F5F7F8;
+                --sub-text: #8A8D91;
+                --border: #2A2B2C;
+            }
         }
+
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+            background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding: env(safe-area-inset-top) 15px calc(env(safe-area-inset-bottom) + 20px) 15px;
             display: flex;
             justify-content: center;
         }
 
-        .container { width: 100%; max-width: 400px; }
+        .app { width: 100%; max-width: 420px; padding-bottom: 160px; }
 
-        .header-box {
-            width: 100%; height: 100px; margin: 15px 0;
-            display: flex; align-items: center; justify-content: center;
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 16px;
+        /* HEADER EKRANI */
+        .header { 
+            background-color: var(--wolt-blue);
+            padding: 15px 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom-left-radius: 20px; 
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 157, 224, 0.15);
+            margin-left: 15px;
+            margin-right: 15px;
+            margin-top: 10px;
         }
-
-        .logo-main { width: 100%; height: 80%; object-fit: contain; }
+        
+        .logo-container img { height: 95px; width: auto; filter: brightness(0) invert(1); display: block; }
+        .logo-fallback { font-size: 40px; font-weight: 900; color: var(--white); letter-spacing: -2px; }
 
         .card {
-            background: var(--card); border-radius: 14px;
-            padding: 12px; margin-bottom: 10px;
+            background: var(--card);
+            border-radius: 16px;
+            padding: 12px 18px;
+            margin: 0 15px 10px 15px;
             border: 1px solid var(--border);
         }
 
-        h3 {
-            margin: 0 0 10px 0; font-size: .7rem;
-            color: var(--accent); text-transform: uppercase;
-            letter-spacing: 1px; display: flex; align-items: center; gap: 6px;
-        }
-
-        label { display: block; font-size: .6rem; color: var(--secondary); margin-bottom: 3px; text-transform: uppercase; }
+        .label { font-size: 10px; font-weight: 800; color: var(--sub-text); text-transform: uppercase; letter-spacing: 0.8px; }
+        .pazari-label { font-size: 11px; font-weight: 800; color: var(--sub-text); text-transform: uppercase; }
+        .date-span { color: var(--wolt-blue); margin-left: 5px; }
 
         input {
-            width: 100%; background: var(--input-bg);
-            border: 1px solid var(--border); color: var(--text);
-            padding: 8px; border-radius: 10px; font-size: 16px;
-            box-sizing: border-box; outline: none;
+            width: 100%;
+            padding: 6px 0;
+            border: none;
+            border-bottom: 1.5px solid var(--border);
+            border-radius: 0;
+            font-size: 16px;
+            font-weight: 600;
+            background: transparent;
+            color: var(--text);
+            outline: none;
         }
 
-        .supplier-row { display: flex; gap: 6px; margin-bottom: 6px; }
-        .supplier-row input[type="text"]:first-child { flex: 1.5; }
-        /* Stilimi për inputet e parave që tani janë text */
-        .money-input { flex: 1; text-align: right; color: var(--success); font-weight: bold; }
+        .furnitore-scroll { max-height: 125px; overflow-y: auto; margin-top: 10px; padding-right: 5px; }
+        .exp-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+        .exp-row input[class="f-name"] { flex: 3; font-size: 14px; }
+        .exp-row input[class="f-val"] { flex: 2; font-size: 14px; text-align: right; font-weight: 600; }
+        .remove-btn { background: none; border: none; color: #bdc3c7; font-size: 16px; cursor: pointer; padding: 5px; }
+        .add-btn { background: none; border: none; color: var(--wolt-blue); font-weight: 700; cursor: pointer; padding: 10px 0 0 0; font-size: 12px; border-top: 1px solid var(--border); width: 100%; text-align: left; }
 
-        .btn-group { display: flex; gap: 8px; margin-top: 5px; }
-        .btn-action { flex: 1; padding: 10px; border-radius: 8px; font-size: .65rem; font-weight: bold; cursor: pointer; border: none; text-transform: uppercase; }
-        .btn-add { background: rgba(179, 147, 86, 0.1); color: var(--accent); border: 1px solid var(--accent); }
-        .btn-remove { background: rgba(150, 42, 34, 0.1); color: var(--danger); border: 1px solid var(--danger); }
+        .cash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .cash-item { display: flex; align-items: center; gap: 8px; background: var(--bg); padding: 8px; border-radius: 8px; }
+        .cash-label { font-size: 12px; font-weight: 700; color: var(--sub-text); min-width: 35px; }
+        .cash-input { border-bottom: none; font-size: 14px; padding: 0; text-align: center; }
 
-        .wallet-item { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); }
-        .denom-label { font-size: .85rem; font-weight: 600; color: #aaa; }
-        .row-total { min-width: 70px; text-align: right; font-size: .8rem; color: var(--secondary); }
-
-        .status-box {
-            text-align: center; padding: 15px; border-radius: 16px;
-            background: #090a09; border: 1px solid var(--border); margin-top: 8px;
+        .cash-total-preview {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 700;
         }
 
-        .theo-info { font-size: .7rem; color: var(--secondary); margin-bottom: 5px; }
-        .theo-val { color: var(--text); font-weight: bold; font-size: 1.1rem; }
-        .big-sum { font-size: 2.2rem; font-weight: 800; margin: 0; }
+        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .btn-share { padding: 12px; border-radius: 12px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-whatsapp { background-color: var(--whatsapp-green); color: white; }
+        .btn-print { background-color: var(--wolt-blue); color: white; }
 
-        .main-actions { display: grid; grid-template-columns: 1fr 1.5fr; gap: 10px; margin-top: 15px; }
-        .btn-main { padding: 15px; border-radius: 12px; font-size: .8rem; font-weight: 800; border: none; cursor: pointer; }
-        .btn-reset { background: #222; color: #888; }
-        .btn-print { background: var(--accent); color: #000; }
+        .reset-container { text-align: center; margin-top: 25px; }
+        .btn-reset { 
+            background: none; border: 1.5px solid var(--wolt-blue); color: var(--wolt-blue); 
+            padding: 8px 18px; border-radius: 20px; font-size: 10px; 
+            font-weight: 800; text-transform: uppercase; cursor: pointer;
+        }
+
+        .wolt-action-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background-color: var(--wolt-blue);
+            color: var(--white);
+            padding: 18px 25px;
+            padding-bottom: calc(18px + env(safe-area-inset-bottom));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        .res-label { font-size: 10px; font-weight: 700; opacity: 0.9; text-transform: uppercase; }
+        .res-val { font-size: 19px; font-weight: 800; }
+        .status-badge { font-size: 11px; font-weight: 800; padding: 8px 16px; border-radius: 20px; text-transform: uppercase; }
+        .badge-neutral { background: rgba(255,255,255,0.2); color: var(--white); }
+        .badge-plus { background: #FFFFFF; color: var(--wolt-blue); }
+        .badge-minus { background: #FFD6DC; color: #EB193E; }
+
+        /* HEADER-I I PRINTIMIT (VERSIONI PERFEKT) */
+        #print-header { display: none; }
 
         @media print {
-            @page { size: A4; margin: 1cm; }
-            #splash-screen { display: none !important; }
-            body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; }
-            .container { max-width: 100% !important; width: 100% !important; }
-            .header-box { height: 70px !important; margin: 0 0 15px 0 !important; background: none !important; border: none !important; }
-            .logo-main { filter: brightness(0) !important; max-height: 70px !important; }
-            .card { border: none !important; border-bottom: 1px solid #ddd !important; padding: 5px 0 !important; margin-bottom: 5px !important; background: none !important; border-radius: 0 !important; }
-            h3 { font-size: 10px !important; color: black !important; border-bottom: 1px solid #000; margin-bottom: 5px !important; }
-            label { font-size: 9px !important; color: #444 !important; }
-            input { background: none !important; color: black !important; border: none !important; font-weight: bold; font-size: 13px !important; padding: 2px 0 !important; }
-            .wallet-item { padding: 2px 0 !important; border-bottom: 1px solid #f0f0f0 !important; }
-            .denom-label { font-size: 12px !important; color: black !important; }
-            .row-total { font-size: 11px !important; color: black !important; }
-            .status-box { background: #f1f1f1 !important; border: 1px solid #ccc !important; padding: 10px !important; margin-top: 15px !important; border-radius: 8px !important; }
-            .big-sum { font-size: 24px !important; color: black !important; }
-            .theo-val { font-size: 14px !important; color: black !important; }
-            .main-actions, .btn-group, .btn-action { display: none !important; }
+            @page { margin: 0; size: portrait; }
+            body { background: white; margin: 0; padding: 0; display: block; }
+            .app { width: 100%; max-width: 100%; padding: 0; }
+            
+            #print-header { 
+                display: flex !important; 
+                width: 100vw; 
+                background-color: #009DE0 !important;
+                height: 60px;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 20px;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            #print-header img { height: 45px; filter: brightness(0) invert(1); }
+            
+            .header, .wolt-action-bar, .add-btn, .remove-btn, .action-btns, .label:not(.print-label), .reset-container { display: none !important; }
+            
+            .card { border: none; box-shadow: none; margin: 0 40px 15px 40px; padding: 0; width: auto; }
+            input { border-bottom: 1px solid #eee !important; font-size: 14px; color: black; }
+            
+            .pazari-label-print { font-size: 16px; font-weight: 800; text-transform: uppercase; text-align: center; display: block; }
+            .date-print { font-size: 12px; color: #009DE0; text-align: center; display: block; margin-bottom: 10px; }
+            
+            .furnitore-scroll { max-height: none; overflow: visible; border-top: 1px solid #eee; }
+            .exp-row { border-bottom: 1px solid #f5f5f5; padding: 5px 0; }
+            
+            .cash-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 5px !important; border-top: 1px solid #eee; padding-top: 10px; }
+            .cash-item { background: none; border: none; padding: 2px; }
+            .cash-label { font-size: 10px; font-weight: 700; color: #777; }
         }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen"></div>
+    <div id="print-header">
+        <img src="logo.svg" alt="Manuka Logo" onerror="this.style.display='none'; document.getElementById('pf').style.display='block';">
+        <div id="pf" style="display:none; color:white; font-weight:900;">MANUKA</div>
+    </div>
 
-    <div class="container">
-        <div class="header-box">
-            <img src="logo.svg" class="logo-main" alt="Logo">
-        </div>
-
-        <div class="card">
-            <div style="display:flex;gap:10px;">
-                <div style="flex:1.2;">
-                    <label>📅 Data</label>
-                    <input type="text" id="data">
-                </div>
-                <div style="flex:1;">
-                    <label>💰 Pazari Total</label>
-                    <input type="text" id="pazari" class="money-input" oninput="calculate()" placeholder="0.00" inputmode="decimal">
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3>Furnitorët</h3>
-            <div id="supplierList">
-                <div class="supplier-row">
-                    <input type="text" placeholder="Emri...">
-                    <input type="text" class="s-amount money-input" placeholder="0.00" oninput="calculate()" inputmode="decimal">
-                </div>
-            </div>
-            <div class="btn-group">
-                <button class="btn-action btn-add" onclick="addSupplier()">+ Shto</button>
-                <button class="btn-action btn-remove" onclick="removeLastSupplier()">✕</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3>Arka Fizike</h3>
-            <div id="denomContainer"></div>
-            <div class="wallet-item" style="border-top:1px solid var(--border);margin-top:5px;padding-top:5px;">
-                <div class="denom-label">Hekrat</div>
-                <input type="text" id="hekrat" class="money-input" oninput="calculate()" style="width:100px;" inputmode="decimal" placeholder="0.00">
-            </div>
-        </div>
-
-        <div class="status-box">
-            <div class="theo-info">NË KULET DUHET TË JENË: <span id="theoretical" class="theo-val">0.00 €</span></div>
-            <div style="font-size:.65rem; font-weight:800; color:var(--secondary); letter-spacing: 1px; text-transform: uppercase;">PLUS / MINUS KE DALË</div>
-            <div id="diffSum" class="big-sum">0.00 €</div>
-        </div>
-
-        <div class="main-actions">
-            <button class="btn-main btn-reset" onclick="confirmReset()">RESET</button>
-            <button class="btn-main btn-print" onclick="window.print()">PRINTO PDF</button>
+<div class="app">
+    <div class="header">
+        <div class="logo-container">
+            <img src="logo.svg" alt="Manuka" onerror="this.style.display='none'; document.getElementById('fallback').style.display='block';">
+            <div id="fallback" class="logo-fallback" style="display:none;">MANUKA</div>
         </div>
     </div>
 
-    <script>
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                const splash = document.getElementById('splash-screen');
-                splash.style.opacity = '0';
-                setTimeout(() => splash.remove(), 800);
-            }, 2500); 
+    <div class="card">
+        <div style="text-align: center;">
+            <span class="pazari-label-print">Pazari Ditore</span>
+            <span class="date-print date-span" id="date-now">---</span>
+        </div>
+        <input type="text" id="pazari" placeholder="0,00" oninput="run()" inputmode="decimal" style="text-align: center; font-size: 24px; margin-top: 10px;">
+    </div>
+
+    <div class="card">
+        <div class="label">Furnitorët / Shpenzimet</div>
+        <div class="furnitore-scroll" id="exp-container">
+            <div id="exp-list"></div>
+        </div>
+        <button class="add-btn" onclick="addExp()">+ SHTO SHPENZIM TJETËR</button>
+    </div>
+
+    <div class="card">
+        <div class="label">Gjendja në Kuletë (Numërimi)</div>
+        <div class="cash-grid">
+            <div class="cash-item"><span class="cash-label">200€</span><input type="text" class="coin" data-val="200" placeholder="0" oninput="run()" inputmode="numeric"></div>
+            <div class="cash-item"><span class="cash-label">100€</span><input type="text" class="coin" data-val="100" placeholder="0" oninput="run()" inputmode="numeric"></div>
+            <div class="cash-item"><span class="cash-label">50€</span><input type="text" class="coin" data-val="50" placeholder="0" oninput="run()" inputmode="numeric"></div>
+            <div class="cash-item"><span class="cash-label">20€</span><input type="text" class="coin" data-val="20" placeholder="0" oninput="run()" inputmode="numeric"></div>
+            <div class="cash-item"><span class="cash-label">10€</span><input type="text" class="coin" data-val="10" placeholder="0" oninput="run()" inputmode="numeric"></div>
+            <div class="cash-item"><span class="cash-label">5€</span><input type="text" class="coin" data-val="5" placeholder="0" oninput="run()" inputmode="numeric"></div>
+            <div class="cash-item"><span class="cash-label">Hek</span><input type="text" class="coin" data-val="1" placeholder="0,00" oninput="run()" inputmode="decimal"></div>
+        </div>
+        <div class="cash-total-preview">
+            <span>Totali i numëruar:</span>
+            <span id="cash-total-label">0.00 €</span>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-share btn-whatsapp" onclick="sendWhatsApp()">WhatsApp</button>
+            <button class="btn-share btn-print" onclick="window.print()">Print / Share</button>
+        </div>
+    </div>
+
+    <div class="reset-container">
+        <button class="btn-reset" onclick="resetApp()">Reset / Dita e re</button>
+    </div>
+</div>
+
+<div class="wolt-action-bar">
+    <div>
+        <div class="res-label">Ne kulet duhet paret mu kan</div>
+        <div id="neto" class="res-val">0.00 €</div>
+    </div>
+    <div id="pill" class="status-badge badge-neutral">Plus / Minus je</div>
+</div>
+
+<script>
+    function parseNumber(value) {
+        if (!value) return 0;
+        let sanitized = value.toString().replace(',', '.');
+        return parseFloat(sanitized) || 0;
+    }
+
+    function updateDate() {
+        const d = new Date();
+        const opt = { weekday: 'long', day: 'numeric', month: 'short' };
+        const formatted = d.toLocaleDateString('sq-AL', opt).toUpperCase();
+        document.querySelectorAll('.date-span, .date-print').forEach(el => el.innerText = formatted);
+    }
+    updateDate();
+
+    function saveAll() {
+        const data = {
+            pazari: document.getElementById('pazari').value,
+            furnitoret: [],
+            kuleta: []
+        };
+        document.querySelectorAll('.exp-row').forEach(r => {
+            data.furnitoret.push({ n: r.querySelector('.f-name').value, v: r.querySelector('.f-val').value });
         });
-
-        document.getElementById('data').value = new Date().toLocaleDateString('sq-AL', {weekday:'short',day:'numeric',month:'short'});
-
-        const denominations=[200,100,50,20,10,5];
-        const container=document.getElementById('denomContainer');
-
-        denominations.forEach(d=>{
-            const div=document.createElement('div');
-            div.className='wallet-item';
-            div.innerHTML= `
-                <div class="denom-label">${d}€</div>
-                <div style="display:flex;align-items:center;gap:8px;">
-                    <input type="text" class="cash" data-v="${d}" oninput="calculate()" style="width:55px;text-align:center;" inputmode="numeric">
-                    <span class="row-total">0.00 €</span>
-                </div>`;
-            container.appendChild(div);
+        document.querySelectorAll('.coin').forEach(c => {
+            data.kuleta.push(c.value);
         });
+        localStorage.setItem('manuka_arka', JSON.stringify(data));
+    }
 
-        function addSupplier(){
-            const div=document.createElement('div');
-            div.className='supplier-row';
-            div.innerHTML='<input type="text" placeholder="Emri..."><input type="text" class="s-amount money-input" placeholder="0.00" oninput="calculate()" inputmode="decimal">';
-            document.getElementById('supplierList').appendChild(div);
+    function loadAll() {
+        const saved = localStorage.getItem('manuka_arka');
+        if (!saved) { addExp(); return; }
+        const data = JSON.parse(saved);
+        document.getElementById('pazari').value = data.pazari || "";
+        data.furnitoret.forEach(f => addExp(f.n, f.v));
+        document.querySelectorAll('.coin').forEach((c, i) => {
+            c.value = data.kuleta[i] || "";
+        });
+        run();
+    }
+
+    function addExp(n = "", v = "") {
+        const div = document.createElement('div');
+        div.className = 'exp-row';
+        div.innerHTML = `<input type="text" placeholder="Emri" class="f-name" value="${n}" oninput="run()"><input type="text" placeholder="0,00" class="f-val" value="${v}" oninput="run()" inputmode="decimal"><button class="remove-btn" onclick="removeRow(this)">✕</button>`;
+        document.getElementById('exp-list').appendChild(div);
+        document.getElementById('exp-container').scrollTop = 999;
+    }
+
+    function removeRow(btn) {
+        if (document.querySelectorAll('.exp-row').length > 1) { btn.parentElement.remove(); run(); }
+        else { btn.parentElement.querySelectorAll('input').forEach(i => i.value = ''); run(); }
+        saveAll();
+    }
+
+    function resetApp() {
+        if (confirm("A jeni të sigurt që dëshironi të filloni një ditë të re?")) {
+            localStorage.removeItem('manuka_arka');
+            location.reload();
         }
+    }
 
-        function removeLastSupplier(){
-            const list=document.getElementById('supplierList');
-            if(list.children.length>1) list.removeChild(list.lastChild);
-            calculate();
-        }
+    function run() {
+        const pazar = parseNumber(document.getElementById('pazari').value);
+        let shp = 0; document.querySelectorAll('.f-val').forEach(i => shp += parseNumber(i.value));
+        let cash = 0; document.querySelectorAll('.coin').forEach(i => cash += parseNumber(i.value) * parseFloat(i.dataset.val));
+        const neto = pazar - shp;
+        const dif = cash - neto;
+        document.getElementById('cash-total-label').innerText = cash.toFixed(2) + " €";
+        document.getElementById('neto').innerText = neto.toFixed(2) + " €";
+        const pill = document.getElementById('pill');
+        if (pazar === 0 && cash === 0) { pill.innerText = "Plus / Minus je"; pill.className = "status-badge badge-neutral"; }
+        else if (Math.abs(dif) < 0.01) { pill.innerText = "OK"; pill.className = "status-badge badge-plus"; }
+        else { pill.innerText = (dif > 0 ? "+" : "") + dif.toFixed(2) + " €"; pill.className = "status-badge " + (dif > 0 ? "badge-plus" : "badge-minus"); }
+        saveAll();
+    }
 
-        // Funksioni për të pastruar tekstin dhe konvertuar në numër
-        function parseVal(val) {
-            let clean = val.replace(',', '.'); // Kthen presjen në pikë nese përdoret
-            return parseFloat(clean) || 0;
-        }
+    function sendWhatsApp() {
+        const pazar = document.getElementById('pazari').value || "0";
+        const neto = document.getElementById('neto').innerText;
+        const total = document.getElementById('cash-total-label').innerText;
+        const stat = document.getElementById('pill').innerText;
+        const data = document.getElementById('date-now').innerText;
+        let shp = ""; document.querySelectorAll('.exp-row').forEach(r => {
+            const n = r.querySelector('.f-name').value;
+            const v = r.querySelector('.f-val').value;
+            if(n || v) shp += `%0A- ${n || 'Shpenzim'}: ${v || '0'}€`;
+        });
+        const msg = `*RAPORTI DITOR - MANUKA*%0A---%0A📅 *Data:* ${data}%0A💰 *Pazari:* ${pazar}€${shp}%0A---%0A✅ *Paret ne kulet duhet mu kan:* ${neto}%0A💵 *Numëruar:* ${total}%0A📊 *Statusi:* ${stat}`;
+        window.open(`https://wa.me/?text=${msg}`, '_blank');
+    }
 
-        function calculate(){
-            const pazari = parseVal(document.getElementById('pazari').value);
-            
-            let furnitoret = 0;
-            document.querySelectorAll('.s-amount').forEach(i => furnitoret += parseVal(i.value));
-            
-            let arka = 0;
-            document.querySelectorAll('.cash').forEach(i => {
-                const v = parseFloat(i.getAttribute('data-v'));
-                const s = (parseVal(i.value)) * v;
-                arka += s;
-                i.nextElementSibling.innerText = s.toFixed(2) + " €";
-            });
-            
-            arka += parseVal(document.getElementById('hekrat').value);
-            
-            const netoPritur = pazari - furnitoret;
-            document.getElementById('theoretical').innerText = netoPritur.toFixed(2) + " €";
-            
-            const diff = arka - netoPritur;
-            const diffEl = document.getElementById('diffSum');
-            diffEl.innerText = (diff > 0 ? "+" : "") + diff.toFixed(2) + " €";
+    window.onload = loadAll;
+</script>
 
-            if(Math.abs(diff) < 0.01) diffEl.style.color = "var(--accent)";
-            else if(diff < 0) diffEl.style.color = "var(--danger)";
-            else diffEl.style.color = "#00e676";
-        }
-
-        function confirmReset(){
-            if(confirm("Dëshironi të fshini të gjitha të dhënat?")) location.reload();
-        }
-    </script>
 </body>
 </html>
